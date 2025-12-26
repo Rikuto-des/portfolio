@@ -1,4 +1,5 @@
-import { motion, AnimatePresence, useMotionValue, useTransform, useAnimation, PanInfo } from "framer-motion";
+import { motion, AnimatePresence, useMotionValue, useTransform, useAnimation } from "framer-motion";
+import type { PanInfo } from "framer-motion";
 import { Folder, Monitor, Box, LayoutTemplate, Zap } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { glitchIn, staggerContainer } from "@/lib/animation-variants";
