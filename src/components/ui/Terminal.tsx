@@ -19,13 +19,13 @@ const FILES = {
 };
 
 const COMMANDS = [
-    { cmd: 'help', desc: '利用可能なツール一覧を表示' },
-    { cmd: 'whoami', desc: 'プロフィールを表示' },
-    { cmd: 'ls', desc: '制作ノートやアイデアを表示' },
-    { cmd: 'cat [file]', desc: 'ファイルの内容を閲覧' },
-    { cmd: 'clear', desc: 'ログを消去' },
-    { cmd: 'inspire', desc: 'クリエイティブな刺激を受ける' },
-    { cmd: 'game', desc: '「ブロック崩し」を開始してリフレッシュ' },
+    { cmd: 'help', desc: 'Show available tools' },
+    { cmd: 'whoami', desc: 'Display profile' },
+    { cmd: 'ls', desc: 'List creative assets' },
+    { cmd: 'cat [file]', desc: 'View content' },
+    { cmd: 'clear', desc: 'Clear history' },
+    { cmd: 'inspire', desc: 'Spark creativity' },
+    { cmd: 'game', desc: 'Start "Creative Block Breaker"' },
 ];
 
 const Terminal = () => {
@@ -78,7 +78,7 @@ const Terminal = () => {
                 });
                 break;
             case 'whoami':
-                output.push({ type: 'success', content: 'Role: UI/UX Designer\nMission: デジタル体験の革新\nStatus: クリエイティブフロー状態' });
+                output.push({ type: 'success', content: 'Role: UI/UX Designer\nMission: Digital Experience Innovation\nStatus: Creative Flow' });
                 break;
             case 'ls':
                 Object.keys(FILES).forEach(f => {
@@ -95,21 +95,21 @@ const Terminal = () => {
                 } else if (!args[1]) {
                     output.push({ type: 'error', content: 'Usage: cat [filename]' });
                 } else {
-                    output.push({ type: 'error', content: `ファイルが見つかりません: ${args[1]}` });
+                    output.push({ type: 'error', content: `File not found: ${args[1]}` });
                 }
                 break;
             case 'inspire':
-                output.push({ type: 'success', content: 'インスピレーションを収集しています...' });
-                output.push({ type: 'system', content: '[✨✨✨✨✨✨✨✨✨✨] 100% 完了' });
-                output.push({ type: 'success', content: '素晴らしいアイデアが降りてきました！' });
+                output.push({ type: 'success', content: 'GATHERING INSPIRATION...' });
+                output.push({ type: 'system', content: '[✨✨✨✨✨✨✨✨✨✨] 100%' });
+                output.push({ type: 'success', content: 'SPARK IGNITED. READY TO CREATE.' });
                 break;
             case 'game':
             case 'play':
                 setGameMode(true);
-                output.push({ type: 'system', content: 'クリエイティブ・ブロック・ブレイカーを起動中...' });
+                output.push({ type: 'system', content: 'Initializing Creative Block Breaker...' });
                 break;
             default:
-                output.push({ type: 'error', content: `コマンドが見つかりません: ${command}。'help' で一覧を確認できます。` });
+                output.push({ type: 'error', content: `Command not found: ${command}. Type 'help' for list.` });
         }
 
         setHistory(prev => [...prev, { command: trimmed, result: output }]);
@@ -139,7 +139,7 @@ const Terminal = () => {
                         {/* Header */}
                         <div className="flex items-center justify-between px-4 py-3 bg-white/5 border-b border-white/10 handle cursor-move">
                             <div className="flex items-center gap-2 text-primary">
-                                <Command size={18} />
+                                <TerminalIcon size={18} />
                                 <span className="font-bold tracking-wider text-xs md:text-sm">CREATIVE_CONSOLE</span>
                             </div>
                             <div className="flex items-center gap-3">
@@ -164,8 +164,8 @@ const Terminal = () => {
                                     <div className="space-y-4 pb-4">
                                         <div className="text-primary/70 leading-relaxed">
                                             Welcome to Creative Console.<br />
-                                            隠されたデザイン領域へようこそ。<br />
-                                            'help' と入力してツールを表示してください。<br />
+                                            Explore the hidden layer of design.<br />
+                                            Type 'help' to reveal tools.<br />
                                             ----------------------------------------
                                         </div>
 
@@ -202,7 +202,7 @@ const Terminal = () => {
                                                 if (e.key === 'Enter') handleCommand(input);
                                             }}
                                             className="flex-1 bg-transparent border-none outline-none text-white placeholder-zinc-700 caret-primary"
-                                            placeholder="コマンドを入力..."
+                                            placeholder="Type a command..."
                                             autoFocus
                                         />
                                     </div>
@@ -253,7 +253,7 @@ const CyberDefenseGame = ({ onExit }: { onExit: () => void }) => {
 
     useEffect(() => {
         lastTimeRef.current = performance.now();
-        lastSpawnTimeRef.current = performance.now();
+        lastSpawnTimeRef.current = performance.now() - 2000; // Start spawning immediately
 
         const loop = (time: number) => {
             if (stateRef.current.gameOver) return;
@@ -356,7 +356,7 @@ const CyberDefenseGame = ({ onExit }: { onExit: () => void }) => {
                             setGameOver(false);
                             setInput('');
                             lastTimeRef.current = performance.now();
-                            lastSpawnTimeRef.current = performance.now();
+                            lastSpawnTimeRef.current = performance.now() - 2000;
                         }}
                         className="w-full bg-primary hover:bg-primary/90 text-black font-bold px-6 py-3 rounded-lg transition-transform active:scale-95"
                     >
