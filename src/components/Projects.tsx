@@ -1,5 +1,4 @@
-import { motion, AnimatePresence, useMotionValue, useTransform, useAnimation } from "framer-motion";
-import type { PanInfo } from "framer-motion";
+import { motion, AnimatePresence, useMotionValue, useTransform, useAnimation, useAnimationFrame } from "framer-motion";
 import { Folder, Monitor, Box, LayoutTemplate, Zap } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { glitchIn, staggerContainer } from "@/lib/animation-variants";
@@ -56,18 +55,18 @@ const cardVariants = {
 };
 
 const ModeCards = ({ displayedProjects, hoveredIndex, setHoveredIndex }: any) => (
-  <div className="relative w-full max-w-6xl h-[600px] flex justify-center items-end perspective-1000">
+  <div className="relative w-full max-w-6xl h-[600px] flex justify-center items-end perspective-1000 mx-auto">
     {displayedProjects.map((project: any, index: number) => (
-      <Link key={project.id} to={`/works/${project.id}`}>
+      <Link key={project.id} to={`/works/${project.id}`} className="absolute bottom-0 left-1/2" style={{ marginLeft: -150 }}>
         <motion.div
-          variants={cardVariants}
+          variants={cardVariants as any}
           custom={index}
           initial="initial"
           animate={hoveredIndex === index ? "hover" : hoveredIndex !== null ? "nonHover" : "initial"}
           onHoverStart={() => setHoveredIndex(index)}
           onHoverEnd={() => setHoveredIndex(null)}
-          className="absolute bottom-0 w-[300px] h-[460px] bg-background border border-primary/20 shadow-2xl rounded-2xl origin-bottom cursor-pointer overflow-hidden group"
-          style={{ left: "50%", marginLeft: -150, transformOrigin: "bottom center" }}
+          className="w-[300px] h-[460px] bg-background border border-primary/20 shadow-2xl rounded-2xl origin-bottom cursor-pointer overflow-hidden group"
+          style={{ transformOrigin: "bottom center" }}
         >
           <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110" style={{ backgroundImage: `url(${project.image})` }} />
           <div className="absolute inset-0 bg-black/60 group-hover:bg-black/30 transition-colors" />
@@ -85,7 +84,7 @@ const ModeCards = ({ displayedProjects, hoveredIndex, setHoveredIndex }: any) =>
 
 const CRTMonitor = ({ project }: { project: any }) => {
   return (
-    <Link to={`/works/${project.id}`} className="group relative w-full pt-[75%]"> {/* Aspect Ratio 4:3 Container */}
+    <Link to={`/works/${project.id}`} className="group relative w-full pt-[75%] block"> {/* Aspect Ratio 4:3 Container */}
       <div className="absolute inset-0 flex items-center justify-center p-4">
         {/* 1. Monitor Chassis (Bezel) */}
         <div className="relative w-full h-full bg-[#1a1a1a] rounded-[20px] shadow-[0_0_0_10px_#2a2a2a,0_0_0_12px_#000,0_20px_50px_rgba(0,0,0,0.8)] overflow-hidden border-t border-white/10">
@@ -142,7 +141,7 @@ const CRTMonitor = ({ project }: { project: any }) => {
 };
 
 const ModeMonitors = ({ displayedProjects }: any) => (
-  <div className="grid grid-cols-1 md:grid-cols-2 gap-12 w-full max-w-5xl p-4">
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-5xl p-4 mx-auto">
     {displayedProjects.map((project: any) => (
       <CRTMonitor key={project.id} project={project} />
     ))}
@@ -152,49 +151,50 @@ const ModeMonitors = ({ displayedProjects }: any) => (
 
 // --- Mode: INTERACTIVE CUBES ---
 
-const InteractiveCube = ({ project, i }: { project: any, i: number }) => {
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const rotateX = useTransform(y, [-100, 100], [30, -30]);
-  const rotateY = useTransform(x, [-100, 100], [-30, 30]);
+const InteractiveCube = ({ project }: { project: any }) => {
+  const rotateX = useMotionValue(-10);
+  const rotateY = useMotionValue(0);
+  const isDragging = useRef(false);
 
-  // Auto rotation animation
-  const controls = useAnimation();
+  // Auto rotation with useAnimationFrame
+  useAnimationFrame((t, delta) => {
+    if (!isDragging.current) {
+      rotateY.set(rotateY.get() + delta * 0.02);
+    }
+  });
 
-  // Start auto rotation on mount
-  useEffect(() => {
-    controls.start({
-      rotateY: [0, 360],
-      transition: { duration: 20, repeat: Infinity, ease: "linear" }
-    });
-  }, [controls]);
-
-  const handleDragStart = () => {
-    controls.stop(); // Stop auto rotation when user grabs it
+  const handlePointerDown = (e: React.PointerEvent) => {
+    isDragging.current = true;
+    (e.target as Element).setPointerCapture(e.pointerId);
   };
 
-  const handleDragEnd = (event: any, info: PanInfo) => {
-    // Optional: Resume auto-rotation or add inertia here
-    // For now, let it stay where specifically turned
+  const handlePointerMove = (e: React.PointerEvent) => {
+    if (!isDragging.current) return;
+    const sensitivity = 0.5;
+    rotateY.set(rotateY.get() + e.movementX * sensitivity);
+    rotateX.set(rotateX.get() - e.movementY * sensitivity);
+  };
+
+  const handlePointerUp = (e: React.PointerEvent) => {
+    isDragging.current = false;
+    (e.target as Element).releasePointerCapture(e.pointerId);
   };
 
   return (
-    <div className="perspective-[1000px] w-[180px] h-[180px] cursor-grab active:cursor-grabbing z-10 m-8">
+    <div
+      className="perspective-[1000px] w-[180px] h-[180px] z-10 m-8 cursor-grab active:cursor-grabbing touch-none"
+      onPointerDown={handlePointerDown}
+      onPointerMove={handlePointerMove}
+      onPointerUp={handlePointerUp}
+      onPointerLeave={handlePointerUp}
+    >
       <motion.div
         className="w-full h-full relative preserve-3d"
-        style={{ rotateX, rotateY, x: 0, y: 0 }} // Bind motion values
-        animate={controls}
-        drag
-        dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
-        dragElastic={0.6}
-        onDragStart={handleDragStart}
-        onDragEnd={handleDragEnd}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.95 }}
+        style={{ rotateX, rotateY }}
       >
         {/* Cube Faces */}
         {/* Front (Image) */}
-        <div className="absolute inset-0 border border-primary/50 bg-black/90 flex items-center justify-center translate-z-[90px] shadow-[0_0_30px_rgba(var(--primary),0.2)]">
+        <div className="absolute inset-0 border border-primary/50 bg-black/90 flex items-center justify-center translate-z-[90px] shadow-[0_0_30px_rgba(var(--primary),0.2)] pointer-events-none user-select-none">
           <div className="relative w-full h-full overflow-hidden">
             <img src={project.image} className="w-full h-full object-cover opacity-80 pointer-events-none" alt="" />
             <div className="absolute bottom-0 inset-x-0 bg-black/60 p-2 text-center pointer-events-none">
@@ -203,26 +203,26 @@ const InteractiveCube = ({ project, i }: { project: any, i: number }) => {
           </div>
         </div>
         {/* Back */}
-        <div className="absolute inset-0 border border-primary/50 bg-black/90 flex items-center justify-center -translate-z-[90px] rotate-y-180">
-          <div className="p-4 text-xs font-mono text-primary/80 pointer-events-none">
+        <div className="absolute inset-0 border border-primary/50 bg-black/90 flex items-center justify-center -translate-z-[90px] rotate-y-180 pointer-events-none user-select-none">
+          <div className="p-4 text-xs font-mono text-primary/80">
             <div className="font-bold border-b border-primary/30 mb-2 pb-1">SYS_INFO</div>
             {project.tech.map((t: string) => <div key={t}>&gt; {t}</div>)}
           </div>
         </div>
         {/* Right */}
-        <div className="absolute inset-0 border border-primary/50 bg-primary/5 flex items-center justify-center rotate-y-90 translate-z-[90px]">
-          <span className="text-primary/30 text-xs font-mono rotate-90 pointer-events-none">SIDE_A</span>
+        <div className="absolute inset-0 border border-primary/50 bg-primary/5 flex items-center justify-center rotate-y-90 translate-z-[90px] pointer-events-none user-select-none">
+          <span className="text-primary/30 text-xs font-mono rotate-90">SIDE_A</span>
         </div>
         {/* Left */}
-        <div className="absolute inset-0 border border-primary/50 bg-primary/5 flex items-center justify-center -rotate-y-90 translate-z-[90px]">
-          <span className="text-primary/30 text-xs font-mono -rotate-90 pointer-events-none">SIDE_B</span>
+        <div className="absolute inset-0 border border-primary/50 bg-primary/5 flex items-center justify-center -rotate-y-90 translate-z-[90px] pointer-events-none user-select-none">
+          <span className="text-primary/30 text-xs font-mono -rotate-90">SIDE_B</span>
         </div>
         {/* Top */}
-        <div className="absolute inset-0 border border-primary/50 bg-primary/5 flex items-center justify-center rotate-x-90 translate-z-[90px]">
+        <div className="absolute inset-0 border border-primary/50 bg-primary/5 flex items-center justify-center rotate-x-90 translate-z-[90px] pointer-events-none user-select-none">
           <div className="w-8 h-8 rounded-full border border-primary/30 animate-pulse pointer-events-none" />
         </div>
         {/* Bottom */}
-        <div className="absolute inset-0 border border-primary/50 bg-primary/5 flex items-center justify-center -rotate-x-90 translate-z-[90px]" />
+        <div className="absolute inset-0 border border-primary/50 bg-primary/5 flex items-center justify-center -rotate-x-90 translate-z-[90px] pointer-events-none user-select-none" />
       </motion.div>
 
       <style dangerouslySetInnerHTML={{
@@ -235,6 +235,7 @@ const InteractiveCube = ({ project, i }: { project: any, i: number }) => {
             .-rotate-y-90 { transform: rotateY(-90deg); }
             .rotate-x-90 { transform: rotateX(90deg); }
             .-rotate-x-90 { transform: rotateX(-90deg); }
+            .user-select-none { user-select: none; -webkit-user-select: none; }
         `}} />
     </div>
   );
@@ -243,9 +244,16 @@ const InteractiveCube = ({ project, i }: { project: any, i: number }) => {
 const ModeCubes = ({ displayedProjects }: any) => (
   <div className="w-full flex flex-wrap items-center justify-center gap-8 py-20">
     {displayedProjects.map((project: any, i: number) => (
-      <Link key={project.id} to={`/works/${project.id}`}>
-        <InteractiveCube key={project.id} project={project} i={i} />
-      </Link>
+      // Note: Click navigation on cubes handles by individual preference or add a dedicated button? 
+      // Since explicit "Grab" functionality is added, the Link wrapper is removed to avoid conflict.
+      <div key={project.id} className="relative group">
+        <InteractiveCube project={project} />
+        <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
+          <Link to={`/works/${project.id}`}>
+            <Button variant="ghost" size="sm" className="text-xs border border-primary/30 hover:bg-primary/20">View Project</Button>
+          </Link>
+        </div>
+      </div>
     ))}
   </div>
 );
@@ -286,7 +294,7 @@ const Projects = () => {
       {/* Mode Switcher */}
       <div className="absolute top-10 right-4 md:right-10 z-50 flex items-center gap-2 bg-black/40 backdrop-blur-md p-1.5 rounded-full border border-white/10">
         {(['cards', 'monitors', 'cubes'] as const).map((m) => {
-          const Icons = { cards: LayoutTemplate, monitors: Monitor, cubes: Box }; // Removed City
+          const Icons = { cards: LayoutTemplate, monitors: Monitor, cubes: Box };
           const Icon = Icons[m];
           return (
             <button
@@ -340,22 +348,22 @@ const Projects = () => {
             className="w-full flex justify-center"
           >
             {viewMode === 'cards' && (
-              <div className="relative w-full max-w-6xl h-[600px] flex justify-center items-end perspective-1000 hidden md:flex">
+              <div className="relative w-full max-w-6xl h-[600px] flex justify-center items-end perspective-1000 hidden md:flex mx-auto">
                 <ModeCards displayedProjects={displayedProjects} hoveredIndex={hoveredIndex} setHoveredIndex={setHoveredIndex} />
               </div>
             )}
 
             <div className="md:hidden w-full px-4">
-              {/* Mobile View - Fallback to simple cards for consistency, or reuse monitors if they scale well. Let's use Monitors for mobile too as they are responsive now */}
-              {viewMode === 'cards' ? (
-                <div className="flex flex-col gap-6">
+              {/* Mobile View Fix: Simple stacking for mobile */}
+              {viewMode === 'cards' || viewMode === 'monitors' || viewMode === 'cubes' ? (
+                <div className="flex flex-col gap-6 w-full max-w-md mx-auto">
                   {displayedProjects.map((project: any, index: number) => (
                     <Link key={project.id} to={`/works/${project.id}`}>
-                      <div className="bg-card border border-border rounded-xl overflow-hidden shadow-lg relative h-[300px] group">
+                      <div className="bg-card border border-border rounded-xl overflow-hidden shadow-lg relative h-[250px] group">
                         <img src={project.image} alt="" className="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-500" />
                         <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
                         <div className="absolute bottom-4 left-4">
-                          <h3 className="text-2xl font-bold text-white">{project.title}</h3>
+                          <h3 className="text-xl font-bold text-white">{project.title}</h3>
                           <p className="text-primary text-xs font-mono">{project.category}</p>
                         </div>
                       </div>
@@ -366,8 +374,8 @@ const Projects = () => {
             </div>
 
 
-            {/* Desktop & Mobile Modes */}
-            <div className={`w-full justify-center ${viewMode === 'cards' ? 'hidden md:flex' : 'flex'}`}>
+            {/* Desktop Modes */}
+            <div className={`w-full justify-center ${viewMode === 'cards' ? 'hidden md:flex' : 'hidden md:flex'}`}>
               {viewMode === 'monitors' && <ModeMonitors displayedProjects={displayedProjects} />}
               {viewMode === 'cubes' && <ModeCubes displayedProjects={displayedProjects} />}
             </div>
