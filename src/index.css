@@ -8,13 +8,13 @@
   --font-heading: "Space Grotesk", system-ui, sans-serif;
   --font-body: "Inter", system-ui, sans-serif;
   --font-mono: "Space Mono", monospace;
-  
+
   --radius-sm: 0.5rem;
   --radius-md: 0.75rem;
   --radius-lg: 1rem;
   --radius-xl: 1.5rem;
   --radius-2xl: 2rem;
-  
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -30,6 +30,7 @@
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
@@ -39,45 +40,46 @@
 }
 
 :root {
-  /* Cool & Playful Cyberpunk Palette */
+  /* Solar Punk / Soft Future Palette */
   --radius: 0.5rem;
-  
-  /* Deep Void Black */
-  --background: oklch(0.1 0.02 240); 
-  
-  /* Holographic White */
-  --foreground: oklch(0.98 0.02 240); 
-  
-  /* Glassy Dark Card */
-  --card: oklch(0.15 0.05 240);
-  --card-foreground: oklch(0.98 0.02 240);
-  
-  --popover: oklch(0.12 0.05 240);
-  --popover-foreground: oklch(0.98 0.02 240);
 
-  /* Neon Cyan */
-  --primary: oklch(0.75 0.2 200); 
-  --primary-foreground: oklch(0.1 0.05 240);
+  /* Soft Silver / Mist Gray - 眩しさを抑えたベースカラー */
+  --background: oklch(0.94 0.02 220);
+
+  /* Deep Slate - 視認性の高いやわらかい黒 */
+  --foreground: oklch(0.3 0.05 240);
+
+  /* Frosted Glass - 背景よりわずかに明るく */
+  --card: oklch(0.97 0.01 220 / 0.6);
+  --card-foreground: oklch(0.3 0.05 240);
+
+  --popover: oklch(0.97 0.01 220 / 0.9);
+  --popover-foreground: oklch(0.3 0.05 240);
+
+  /* Electric Cyan - ややパステル寄りに調整して馴染ませる */
+  --primary: oklch(0.65 0.18 200);
+  --primary-foreground: oklch(0.98 0.01 220);
 
   /* Neon Magenta */
-  --secondary: oklch(0.65 0.25 320);
-  --secondary-foreground: oklch(0.98 0.02 240);
+  --secondary: oklch(0.7 0.2 320);
+  --secondary-foreground: oklch(0.98 0.01 220);
 
-  /* Tech Gray */
-  --muted: oklch(0.2 0.05 240);
-  --muted-foreground: oklch(0.7 0.05 240);
+  /* Cool Gray */
+  --muted: oklch(0.9 0.02 220);
+  --muted-foreground: oklch(0.55 0.05 240);
 
   /* Acid Lime */
-  --accent: oklch(0.85 0.2 140);
-  --accent-foreground: oklch(0.1 0.05 240);
+  --accent: oklch(0.75 0.18 140);
+  --accent-foreground: oklch(0.3 0.05 240);
 
-  --destructive: oklch(0.6 0.25 20);
-  
-  /* Glowing Border */
-  --border: oklch(0.3 0.1 240); 
-  --input: oklch(0.2 0.05 240);
-  --ring: oklch(0.75 0.2 200);
+  --destructive: oklch(0.6 0.2 20);
+
+  /* Subtle Tech Border */
+  --border: oklch(0.85 0.02 220);
+  --input: oklch(0.9 0.02 220);
+  --ring: oklch(0.65 0.18 200);
 }
+
 
 .dark {
   /* Inherit root variables as this theme is dark by default */
@@ -87,31 +89,59 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground font-body antialiased selection:bg-primary selection:text-primary-foreground;
+    /* Removed background-attachment: fixed for scroll performance */
+    background-image:
+      radial-gradient(circle at 50% 0%, oklch(0.65 0.18 200 / 0.03) 0%, transparent 60%),
+      radial-gradient(circle at 85% 30%, oklch(0.7 0.2 320 / 0.03) 0%, transparent 50%),
+      radial-gradient(circle at 15% 70%, oklch(0.75 0.18 140 / 0.02) 0%, transparent 50%);
   }
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-heading font-bold tracking-tight;
+
+  /* Custom Selection Color */
+  ::selection {
+    @apply bg-primary/20 text-primary;
   }
-  
-  /* Cyber Grid Background */
+
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-background;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-primary/20 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-primary shadow-[0_0_10px_var(--primary)];
+  }
+
+  /* Cyber Grid Background - Optimized */
   .bg-grid {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     pointer-events: none;
-    z-index: 0;
-    opacity: 0.15;
-    background-size: 50px 50px;
-    background-image: 
-      linear-gradient(to right, var(--primary) 1px, transparent 1px),
-      linear-gradient(to bottom, var(--primary) 1px, transparent 1px);
-    mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+    z-index: -1;
+    opacity: 0.5;
+    background-size: 40px 40px;
+    background-image:
+      linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+    mask-image: radial-gradient(circle at center, black, transparent 80%);
+    will-change: transform;
+    transform: translateZ(0);
+    /* Force GPU layer */
   }
 
-  .bg-noise {
+  /* Animated Scanline - Optimized */
+  .scanline {
     position: fixed;
     top: 0;
     left: 0;
@@ -119,10 +149,16 @@
     height: 100%;
     pointer-events: none;
     z-index: 50;
-    opacity: 0.05;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-    mix-blend-mode: overlay;
+    background: linear-gradient(to bottom, transparent 50%, rgba(255, 255, 255, 0.8) 51%);
+    background-size: 100% 4px;
+    opacity: 0.03;
+    /* Reduced opacity */
+    will-change: transform;
+    transform: translateZ(0);
   }
+
+  /* Noise removed for performance */
+  /* .bg-noise { ... } */
 
   /* Custom Scrollbar - Cyberpunk Style */
   ::-webkit-scrollbar {
@@ -179,29 +215,117 @@
   }
 
   @keyframes glitch-anim-1 {
-    0% { clip-path: polygon(0 2%, 100% 2%, 100% 5%, 0 5%); }
-    20% { clip-path: polygon(0 15%, 100% 15%, 100% 15%, 0 15%); }
-    40% { clip-path: polygon(0 10%, 100% 10%, 100% 20%, 0 20%); }
-    60% { clip-path: polygon(0 1%, 100% 1%, 100% 2%, 0 2%); }
-    80% { clip-path: polygon(0 33%, 100% 33%, 100% 33%, 0 33%); }
-    100% { clip-path: polygon(0 44%, 100% 44%, 100% 44%, 0 44%); }
+    0% {
+      clip-path: polygon(0 2%, 100% 2%, 100% 5%, 0 5%);
+    }
+
+    20% {
+      clip-path: polygon(0 15%, 100% 15%, 100% 15%, 0 15%);
+    }
+
+    40% {
+      clip-path: polygon(0 10%, 100% 10%, 100% 20%, 0 20%);
+    }
+
+    60% {
+      clip-path: polygon(0 1%, 100% 1%, 100% 2%, 0 2%);
+    }
+
+    80% {
+      clip-path: polygon(0 33%, 100% 33%, 100% 33%, 0 33%);
+    }
+
+    100% {
+      clip-path: polygon(0 44%, 100% 44%, 100% 44%, 0 44%);
+    }
   }
 
   @keyframes glitch-anim-2 {
-    0% { clip-path: polygon(0 12%, 100% 12%, 100% 15%, 0 15%); }
-    20% { clip-path: polygon(0 25%, 100% 25%, 100% 25%, 0 25%); }
-    40% { clip-path: polygon(0 30%, 100% 30%, 100% 40%, 0 40%); }
-    60% { clip-path: polygon(0 11%, 100% 11%, 100% 12%, 0 12%); }
-    80% { clip-path: polygon(0 53%, 100% 53%, 100% 53%, 0 53%); }
-    100% { clip-path: polygon(0 24%, 100% 24%, 100% 24%, 0 24%); }
+    0% {
+      clip-path: polygon(0 12%, 100% 12%, 100% 15%, 0 15%);
+    }
+
+    20% {
+      clip-path: polygon(0 25%, 100% 25%, 100% 25%, 0 25%);
+    }
+
+    40% {
+      clip-path: polygon(0 30%, 100% 30%, 100% 40%, 0 40%);
+    }
+
+    60% {
+      clip-path: polygon(0 11%, 100% 11%, 100% 12%, 0 12%);
+    }
+
+    80% {
+      clip-path: polygon(0 53%, 100% 53%, 100% 53%, 0 53%);
+    }
+
+    100% {
+      clip-path: polygon(0 24%, 100% 24%, 100% 24%, 0 24%);
+    }
   }
 
   /* Cyber Button Clip Path */
   .cyber-button {
-    clip-path: polygon(
-      10px 0, 100% 0, 
-      100% calc(100% - 10px), calc(100% - 10px) 100%, 
-      0 100%, 0 10px
-    );
+    clip-path: polygon(10px 0, 100% 0,
+        100% calc(100% - 10px), calc(100% - 10px) 100%,
+        0 100%, 0 10px);
+  }
+}
+
+@layer utilities {
+  .text-stroke-primary {
+    -webkit-text-stroke: 1px var(--primary);
+    color: transparent;
+  }
+
+  .bg-300\% {
+    background-size: 300% 300%;
+  }
+
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+
+  .animate-gradient-x {
+    animation: gradient-x 15s ease infinite;
+  }
+
+  .animate-pulse-slow {
+    animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .tracking-in-expand {
+    animation: tracking-in-expand 0.7s cubic-bezier(0.215, 0.610, 0.355, 1.000) both;
+  }
+}
+
+@keyframes gradient-x {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes tracking-in-expand {
+  0% {
+    letter-spacing: -0.5em;
+    opacity: 0;
+  }
+
+  40% {
+    opacity: 0.6;
+  }
+
+  100% {
+    opacity: 1;
   }
 }

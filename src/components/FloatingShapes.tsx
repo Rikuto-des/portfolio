@@ -6,49 +6,49 @@ const shapes = [
   {
     type: 'cyber-circle',
     color: 'border-primary',
-    size: 'w-24 h-24 md:w-32 md:h-32',
-    initial: { x: '10vw', y: '15vh' },
-    speed: 0.5,
+    size: 'w-32 h-32 md:w-48 md:h-48',
+    initial: { x: '5vw', y: '10vh' },
+    speed: 0.2,
   },
-  // Data Square
+  // Data Grid
   {
-    type: 'data-square',
-    color: 'border-secondary',
-    size: 'w-16 h-16 md:w-24 md:h-24',
-    initial: { x: '85vw', y: '10vh' },
-    speed: 0.8,
+    type: 'data-grid',
+    color: 'bg-secondary',
+    size: 'w-24 h-24 md:w-32 md:h-32',
+    initial: { x: '85vw', y: '15vh' },
+    speed: 0.5,
   },
   // Glitch Triangle
   {
     type: 'glitch-triangle',
-    color: 'bg-accent',
+    color: 'border-accent',
     size: 'w-20 h-20 md:w-28 md:h-28',
-    initial: { x: '5vw', y: '45vh' },
+    initial: { x: '10vw', y: '50vh' },
     speed: 0.3,
   },
-  // Code Cross
-  {
-    type: 'code-cross',
-    color: 'text-primary',
-    size: 'text-6xl md:text-8xl',
-    initial: { x: '90vw', y: '60vh' },
-    speed: 0.6,
-  },
-  // Hexagon
+  // Hexagon Outline
   {
     type: 'hexagon',
-    color: 'border-accent',
-    size: 'w-24 h-24 md:w-32 md:h-32',
-    initial: { x: '15vw', y: '85vh' },
+    color: 'border-primary',
+    size: 'w-40 h-40 md:w-56 md:h-56',
+    initial: { x: '80vw', y: '65vh' },
     speed: 0.4,
   },
-  // Binary Pill
+  // Code Snippet
   {
-    type: 'binary-pill',
-    color: 'border-secondary',
-    size: 'w-32 h-10 md:w-48 md:h-14',
-    initial: { x: '80vw', y: '35vh' },
-    speed: 0.7,
+    type: 'code-snippet',
+    color: 'text-muted-foreground',
+    size: 'text-xs',
+    initial: { x: '15vw', y: '85vh' },
+    speed: 0.6,
+  },
+  // Binary Stream
+  {
+    type: 'binary',
+    color: 'text-primary',
+    size: 'text-xs',
+    initial: { x: '70vw', y: '30vh' },
+    speed: 0.8,
   }
 ];
 
@@ -59,74 +59,81 @@ const FloatingShapes = () => {
   return (
     <div ref={containerRef} className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
       {shapes.map((shape, i) => {
-        const y = useTransform(scrollYProgress, [0, 1], [0, shape.speed * 500 * (i % 2 === 0 ? 1 : -1)]);
-        const rotate = useTransform(scrollYProgress, [0, 1], [0, 360 * (i % 2 === 0 ? 1 : -1)]);
-        const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [0.1, 0.3, 0.1]);
+        const y = useTransform(scrollYProgress, [0, 1], [0, shape.speed * 300 * (i % 2 === 0 ? 1 : -1)]);
+        const rotate = useTransform(scrollYProgress, [0, 1], [0, 180 * (i % 2 === 0 ? 1 : -1)]);
+        const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.1, 0.3, 0.3, 0.1]);
 
         return (
           <motion.div
             key={i}
             style={{ 
-              x: shape.initial.x, 
-              y: shape.initial.y, 
+              left: shape.initial.x, 
+              top: shape.initial.y, 
               translateY: y,
               rotate,
               opacity
             }}
             className="absolute transition-opacity duration-300 will-change-transform mix-blend-screen"
+            animate={{
+              y: [0, -20, 0],
+            }}
+            transition={{
+              duration: 4 + i,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
           >
             {shape.type === 'cyber-circle' && (
-              <div className={`${shape.size} ${shape.color} rounded-full border-[1px] md:border-2 relative`}>
-                <div className="absolute inset-0 rounded-full border border-dashed border-white/20 animate-spin-slow" />
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-primary rounded-full shadow-[0_0_10px_var(--primary)]" />
+              <div className={`${shape.size} rounded-full border border-dashed ${shape.color} opacity-20 relative animate-spin-slow`}>
+                <div className="absolute inset-2 rounded-full border border-primary/20" />
+                <div className="absolute top-0 left-1/2 w-1 h-1 bg-primary rounded-full shadow-[0_0_8px_var(--primary)]" />
               </div>
             )}
             
-            {shape.type === 'data-square' && (
-              <div className={`${shape.size} ${shape.color} border-[1px] md:border-2 relative overflow-hidden`}>
-                <div className="absolute inset-0 bg-secondary/10" />
-                <motion.div 
-                  animate={{ y: ['-100%', '100%'] }}
-                  transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
-                  className="absolute inset-x-0 h-[2px] bg-secondary shadow-[0_0_5px_var(--secondary)]"
-                />
+            {shape.type === 'data-grid' && (
+              <div className={`${shape.size} grid grid-cols-3 gap-1 opacity-20`}>
+                {[...Array(9)].map((_, j) => (
+                  <div key={j} className={`bg-current ${shape.color} rounded-[1px]`} style={{ opacity: Math.random() }} />
+                ))}
               </div>
             )}
             
             {shape.type === 'glitch-triangle' && (
-              <div className="relative">
+              <div className={`${shape.size} relative opacity-30`}>
                 <div 
-                  className={`${shape.size} border-2 border-accent`} 
-                  style={{ clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)' }} 
+                  className={`absolute inset-0 border-2 ${shape.color}`}
+                  style={{ clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)' }}
                 />
-                 <div 
-                  className={`${shape.size} bg-accent/20 absolute top-1 left-1 blur-sm`} 
-                  style={{ clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)' }} 
+                <div 
+                  className={`absolute inset-0 bg-accent/10 blur-md`}
+                  style={{ clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)' }}
                 />
-              </div>
-            )}
-            
-            {shape.type === 'code-cross' && (
-              <div className={`font-heading font-black ${shape.size} ${shape.color} select-none relative`}>
-                +
-                <span className="absolute top-0 left-0 text-secondary opacity-50 blur-[2px]">+</span>
               </div>
             )}
             
             {shape.type === 'hexagon' && (
               <div 
-                className={`${shape.size} ${shape.color} border-2`}
+                className={`${shape.size} border ${shape.color} opacity-10`}
                 style={{ clipPath: 'polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)' }}
               >
-                <div className="w-full h-full bg-accent/5 backdrop-blur-sm" />
+                <div className="w-full h-full flex items-center justify-center">
+                  <div className="w-2/3 h-2/3 border border-primary/20" style={{ clipPath: 'polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)' }} />
+                </div>
               </div>
             )}
             
-            {shape.type === 'binary-pill' && (
-              <div className={`${shape.size} ${shape.color} rounded-full border border-dashed flex items-center justify-center overflow-hidden`}>
-                <div className="font-mono text-xs text-secondary/50 whitespace-nowrap">
-                  1011010010101101
-                </div>
+            {shape.type === 'code-snippet' && (
+              <div className="font-mono opacity-20 space-y-1">
+                <div className="w-24 h-1 bg-current rounded" />
+                <div className="w-16 h-1 bg-current rounded ml-4" />
+                <div className="w-20 h-1 bg-current rounded ml-4" />
+                <div className="w-12 h-1 bg-current rounded" />
+              </div>
+            )}
+            
+            {shape.type === 'binary' && (
+              <div className="font-mono text-xs opacity-20 tracking-widest writing-vertical-lr">
+                101101001
               </div>
             )}
           </motion.div>

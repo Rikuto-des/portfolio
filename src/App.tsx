@@ -1,9 +1,9 @@
-import Hero from "./components/Hero";
-import About from "./components/About";
-import Projects from "./components/Projects";
-import Contact from "./components/Contact";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import Home from "./pages/Home";
+import ProjectDetail from "./pages/ProjectDetail";
+import Archive from "./pages/Archive";
 import CustomCursor from "./components/CustomCursor";
 import FloatingShapes from "./components/FloatingShapes";
 import Preloader from "./components/Preloader";
@@ -14,28 +14,29 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
 
   return (
-    <div className="min-h-screen bg-background text-foreground font-body overflow-x-hidden selection:bg-primary selection:text-primary-foreground">
-      <AnimatePresence mode="wait">
-        {isLoading && <Preloader onComplete={() => setIsLoading(false)} />}
-      </AnimatePresence>
+    <Router>
+      <div className="min-h-screen bg-background text-foreground font-body overflow-x-hidden selection:bg-primary selection:text-primary-foreground transition-colors duration-500">
+        <AnimatePresence mode="wait">
+          {isLoading && <Preloader onComplete={() => setIsLoading(false)} />}
+        </AnimatePresence>
 
-      {!isLoading && (
-        <>
-          <div className="bg-grid" />
-          <div className="bg-noise" />
-          <FloatingShapes />
-          <CustomCursor />
-          <Header />
-          <main>
-            <Hero />
-            <About />
-            <Projects />
-            <Contact />
-          </main>
-          <Footer />
-        </>
-      )}
-    </div>
+        {!isLoading && (
+          <>
+            <div className="bg-grid" />
+            <div className="bg-noise" />
+            <FloatingShapes />
+            <CustomCursor />
+            <Header />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/works/:id" element={<ProjectDetail />} />
+              <Route path="/archive" element={<Archive />} />
+            </Routes>
+            <Footer />
+          </>
+        )}
+      </div>
+    </Router>
   );
 }
 

@@ -4,10 +4,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { motion, AnimatePresence } from "framer-motion";
 import { Send, Mail, Check, Loader2, Terminal, MessageSquare, User, AtSign } from "lucide-react";
 import { useState } from "react";
+import { staggerContainer, techPop, glitchIn, scanlineReveal } from "@/lib/animation-variants";
 
 const Confetti = () => {
+  // ... (Confetti component remains same)
   const particles = Array.from({ length: 20 });
-  
+
   return (
     <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-50">
       {particles.map((_, i) => (
@@ -22,11 +24,9 @@ const Confetti = () => {
             rotate: Math.random() * 360,
           }}
           transition={{ duration: 1, ease: "easeOut" }}
-          className={`absolute w-4 h-4 ${
-            ['bg-primary', 'bg-secondary', 'bg-accent', 'bg-white'][Math.floor(Math.random() * 4)]
-          } ${
-            ['rounded-full', 'rounded-none', 'rounded-sm'][Math.floor(Math.random() * 3)]
-          }`}
+          className={`absolute w-4 h-4 ${['bg-primary', 'bg-secondary', 'bg-accent', 'bg-white'][Math.floor(Math.random() * 4)]
+            } ${['rounded-full', 'rounded-none', 'rounded-sm'][Math.floor(Math.random() * 3)]
+            }`}
         />
       ))}
     </div>
@@ -39,12 +39,12 @@ const Contact = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setFormState('submitting');
-    
+
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1500));
-    
+
     setFormState('success');
-    
+
     // Reset after showing success state
     setTimeout(() => {
       setFormState('idle');
@@ -53,47 +53,50 @@ const Contact = () => {
   };
 
   return (
-    <section id="contact" className="py-32 bg-background relative overflow-hidden">
+    <section id="contact" className="py-32 bg-transparent relative overflow-hidden">
       {/* Cyber Background */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute inset-0 bg-grid opacity-10" />
         <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-background via-background/80 to-transparent" />
         <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-background via-background/80 to-transparent" />
-        
+
         {/* Radar Scan Effect */}
-        <motion.div 
+        <motion.div
           animate={{ rotate: 360 }}
           transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] border border-primary/10 rounded-full opacity-30"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] border border-primary/5 rounded-full opacity-30"
         >
-          <div className="absolute top-0 left-1/2 w-[1px] h-1/2 bg-gradient-to-b from-transparent to-primary/50 origin-bottom" />
+          <div className="absolute top-0 left-1/2 w-[1px] h-1/2 bg-gradient-to-b from-transparent to-primary/30 origin-bottom" />
         </motion.div>
       </div>
 
       <div className="container mx-auto px-6 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
-          
+        <motion.div
+          className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center"
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+        >
+
           {/* Left Column: Text & Info */}
           <div className="space-y-12">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
+              variants={scanlineReveal}
               className="relative"
             >
               <div className="flex items-center gap-2 mb-4">
-                <div className="w-3 h-3 bg-primary rounded-full animate-pulse" />
+                <div className="w-3 h-3 bg-primary rounded-full animate-pulse shadow-[0_0_10px_var(--primary)]" />
                 <span className="font-mono text-sm text-primary tracking-widest">COMMS_LINK_READY</span>
               </div>
 
-              <h2 className="font-heading font-black text-6xl md:text-8xl mb-6 leading-none text-foreground drop-shadow-[0_0_15px_rgba(var(--primary),0.3)]">
+              <h2 className="font-heading font-black text-6xl md:text-8xl mb-6 leading-none text-foreground drop-shadow-sm">
                 LET'S<br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-white to-secondary animate-gradient-x">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-foreground to-secondary animate-gradient-x">
                   CONNECT
                 </span>
               </h2>
-              
+
               <div className="font-mono text-lg text-muted-foreground border-l-2 border-primary/30 pl-6 py-2 bg-gradient-to-r from-primary/5 to-transparent">
                 <p>
                   &gt; INITIATE_PROTOCOL: Collaboration<br />
@@ -103,103 +106,100 @@ const Contact = () => {
               </div>
             </motion.div>
 
-            <div className="space-y-6">
-              <a 
-                href="mailto:hello@rikuto.design" 
-                className="group relative flex items-center justify-between p-8 bg-black/40 border border-primary/30 rounded-lg hover:border-primary transition-all overflow-hidden"
+            <motion.div variants={techPop} className="space-y-6">
+              <a
+                href="mailto:hello@rikuto.design"
+                className="group relative flex items-center justify-between p-8 bg-card/60 border border-border/50 rounded-lg hover:border-primary transition-all overflow-hidden backdrop-blur-sm shadow-sm hover:shadow-md"
               >
                 {/* Hover Fill Effect */}
-                <div className="absolute inset-0 bg-primary/10 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-300" />
-                
+                <div className="absolute inset-0 bg-primary/5 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-300" />
+
                 <div className="relative z-10">
                   <span className="block text-xs font-mono text-primary mb-2 tracking-widest">Target_Address</span>
                   <span className="font-heading font-bold text-2xl md:text-4xl text-foreground">hello@rikuto.design</span>
                 </div>
-                <div className="relative z-10 w-16 h-16 rounded-full border-2 border-primary/50 flex items-center justify-center group-hover:bg-primary group-hover:text-black transition-all group-hover:shadow-[0_0_20px_var(--primary)]">
+                <div className="relative z-10 w-16 h-16 rounded-full border-2 border-border flex items-center justify-center group-hover:bg-primary group-hover:text-black transition-all group-hover:shadow-[0_0_20px_var(--primary)] text-muted-foreground">
                   <Mail className="w-8 h-8" strokeWidth={2} />
                 </div>
               </a>
-            </div>
+            </motion.div>
           </div>
 
           {/* Right Column: Form */}
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2, duration: 0.8 }}
-            className="bg-card/30 backdrop-blur-xl p-1 rounded-2xl border border-white/10 shadow-[0_0_50px_rgba(var(--primary),0.1)]"
+            variants={glitchIn}
+            className="bg-card/30 backdrop-blur-xl p-1 rounded-2xl border border-border/50 shadow-xl"
           >
-            <div className="bg-black/80 p-8 md:p-10 rounded-xl relative overflow-hidden">
+            <div className="bg-card/90 p-8 md:p-10 rounded-xl relative overflow-hidden backdrop-blur-md border border-border/10">
               {/* Scanline Overlay */}
-              <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] z-[1] pointer-events-none bg-[length:100%_4px,3px_100%]" />
-              
+              <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.05)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] z-[1] pointer-events-none bg-[length:100%_4px,3px_100%]" />
+
               {/* Header UI */}
-              <div className="flex justify-between items-center mb-8 border-b border-white/10 pb-4">
+              <div className="flex justify-between items-center mb-8 border-b border-border/20 pb-4">
                 <div className="flex items-center gap-2 text-xs font-mono text-muted-foreground">
                   <Terminal size={14} />
                   <span>TRANSMISSION_CONSOLE</span>
                 </div>
                 <div className="flex gap-1.5">
-                  <div className="w-2 h-2 rounded-full bg-red-500/50" />
-                  <div className="w-2 h-2 rounded-full bg-yellow-500/50" />
-                  <div className="w-2 h-2 rounded-full bg-green-500/50" />
+                  <div className="w-2 h-2 rounded-full bg-red-400/80" />
+                  <div className="w-2 h-2 rounded-full bg-yellow-400/80" />
+                  <div className="w-2 h-2 rounded-full bg-green-400/80" />
                 </div>
               </div>
 
               <form className="space-y-6 relative z-10" onSubmit={handleSubmit}>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2 group">
-                    <label htmlFor="name" className="text-xs font-mono text-primary flex items-center gap-2 group-focus-within:text-white transition-colors">
+                    <label htmlFor="name" className="text-xs font-mono text-primary flex items-center gap-2 group-focus-within:text-foreground transition-colors">
                       <User size={12} /> // IDENTIFIER
                     </label>
-                    <Input 
-                      id="name" 
+                    <Input
+                      id="name"
                       required
-                      placeholder="Input Name..." 
+                      placeholder="Input Name..."
                       disabled={formState !== 'idle'}
-                      className="bg-white/5 border-white/10 focus:border-primary h-12 rounded-none text-base font-mono text-foreground transition-all focus:bg-white/10 placeholder:text-muted-foreground/30" 
+                      className="bg-background/50 border-border focus:border-primary h-12 rounded-none text-base font-mono text-foreground transition-all focus:bg-background placeholder:text-muted-foreground/50 focus:shadow-md"
                     />
                   </div>
                   <div className="space-y-2 group">
-                    <label htmlFor="email" className="text-xs font-mono text-primary flex items-center gap-2 group-focus-within:text-white transition-colors">
+                    <label htmlFor="email" className="text-xs font-mono text-primary flex items-center gap-2 group-focus-within:text-foreground transition-colors">
                       <AtSign size={12} /> // FREQUENCY
                     </label>
-                    <Input 
-                      id="email" 
-                      type="email" 
+                    <Input
+                      id="email"
+                      type="email"
                       required
-                      placeholder="Input Email..." 
+                      placeholder="Input Email..."
                       disabled={formState !== 'idle'}
-                      className="bg-white/5 border-white/10 focus:border-primary h-12 rounded-none text-base font-mono text-foreground transition-all focus:bg-white/10 placeholder:text-muted-foreground/30" 
+                      className="bg-background/50 border-border focus:border-primary h-12 rounded-none text-base font-mono text-foreground transition-all focus:bg-background placeholder:text-muted-foreground/50 focus:shadow-md"
                     />
                   </div>
                 </div>
 
                 <div className="space-y-2 group">
-                  <label htmlFor="message" className="text-xs font-mono text-primary flex items-center gap-2 group-focus-within:text-white transition-colors">
+                  <label htmlFor="message" className="text-xs font-mono text-primary flex items-center gap-2 group-focus-within:text-foreground transition-colors">
                     <MessageSquare size={12} /> // DATA_PACKET
                   </label>
-                  <Textarea 
-                    id="message" 
+                  <Textarea
+                    id="message"
                     required
-                    placeholder="Input Message Sequence..." 
+                    placeholder="Input Message Sequence..."
                     disabled={formState !== 'idle'}
-                    className="bg-white/5 border-white/10 focus:border-primary min-h-[150px] rounded-none text-base font-mono text-foreground resize-none p-4 transition-all focus:bg-white/10 placeholder:text-muted-foreground/30"
+                    className="bg-background/50 border-border focus:border-primary min-h-[150px] rounded-none text-base font-mono text-foreground resize-none p-4 transition-all focus:bg-background placeholder:text-muted-foreground/50 focus:shadow-md"
                   />
                 </div>
 
                 <div className="relative pt-4">
                   {formState === 'success' && <Confetti />}
-                  
-                  <Button 
-                    type="submit" 
+
+                  <Button
+                    type="submit"
                     size="lg"
                     disabled={formState !== 'idle'}
                     className={`w-full h-14 text-lg font-bold rounded-none border transition-all relative overflow-hidden group
-                      ${formState === 'success' 
-                        ? 'bg-green-500/20 text-green-500 border-green-500' 
-                        : 'bg-primary/10 text-primary border-primary hover:bg-primary hover:text-black'
+                      ${formState === 'success'
+                        ? 'bg-green-500/20 text-green-600 border-green-500 shadow-md'
+                        : 'bg-primary/10 text-primary border-primary hover:bg-primary hover:text-black hover:shadow-lg hover:shadow-primary/20'
                       }
                     `}
                   >
@@ -209,7 +209,7 @@ const Contact = () => {
 
                     <AnimatePresence mode="wait">
                       {formState === 'idle' && (
-                        <motion.span 
+                        <motion.span
                           key="idle"
                           initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
@@ -221,7 +221,7 @@ const Contact = () => {
                         </motion.span>
                       )}
                       {formState === 'submitting' && (
-                        <motion.span 
+                        <motion.span
                           key="submitting"
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
@@ -233,7 +233,7 @@ const Contact = () => {
                         </motion.span>
                       )}
                       {formState === 'success' && (
-                        <motion.span 
+                        <motion.span
                           key="success"
                           initial={{ opacity: 0, scale: 0.5 }}
                           animate={{ opacity: 1, scale: 1 }}
@@ -251,7 +251,7 @@ const Contact = () => {
             </div>
           </motion.div>
 
-        </div>
+        </motion.div>
       </div>
     </section>
   );
