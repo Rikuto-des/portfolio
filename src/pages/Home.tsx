@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 import { scrollToElement } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 import { CustomCursor } from "@/components/ui/CustomCursor";
+import Terminal from "@/components/ui/Terminal";
 
 // Lazy load heavy sections
 const About = lazy(() => import("@/components/About"));
@@ -29,6 +30,7 @@ const Home = () => {
 
     return (
         <main className="bg-background min-h-screen">
+            <Terminal />
             <CustomCursor />
             <Hero />
             <Suspense fallback={<SectionLoader />}>
