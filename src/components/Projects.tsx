@@ -383,23 +383,12 @@ const Projects = () => {
             )}
 
             <div className="md:hidden w-full px-4">
-              {/* Mobile View Fix: Simple stacking for mobile */}
-              {viewMode === 'cards' || viewMode === 'monitors' || viewMode === 'cubes' ? (
-                <div className="flex flex-col gap-6 w-full max-w-md mx-auto">
-                  {displayedProjects.map((project: any, index: number) => (
-                    <Link key={project.id} to={`/works/${project.id}`}>
-                      <div className="bg-card border border-border rounded-xl overflow-hidden shadow-lg relative h-[250px] group">
-                        <img src={project.image} alt="" className="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-500" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
-                        <div className="absolute bottom-4 left-4">
-                          <h3 className="text-xl font-bold text-white">{project.title}</h3>
-                          <p className="text-primary text-xs font-mono">{project.category}</p>
-                        </div>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-              ) : null}
+              {/* Mobile View: Always use CRT Monitors for retro feel */}
+              <div className="flex flex-col gap-12 w-full max-w-md mx-auto">
+                {displayedProjects.map((project: any) => (
+                  <CRTMonitor key={project.id} project={project} />
+                ))}
+              </div>
             </div>
 
 
