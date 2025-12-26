@@ -205,7 +205,7 @@ const InteractiveCube = ({ project, i }: { project: any, i: number }) => {
         <div className="absolute inset-0 border border-primary/50 bg-black/90 flex items-center justify-center -translate-z-[90px] rotate-y-180">
           <div className="p-4 text-xs font-mono text-primary/80 pointer-events-none">
             <div className="font-bold border-b border-primary/30 mb-2 pb-1">SYS_INFO</div>
-            {project.tech.map((t: string) => <div key={t}>> {t}</div>)}
+            {project.tech.map((t: string) => <div key={t}>&gt; {t}</div>)}
           </div>
         </div>
         {/* Right */}
