@@ -57,25 +57,26 @@ const cardVariants = {
 const ModeCards = ({ displayedProjects, hoveredIndex, setHoveredIndex }: any) => (
   <div className="relative w-full max-w-6xl h-[600px] flex justify-center items-end perspective-1000 mx-auto">
     {displayedProjects.map((project: any, index: number) => (
-      <Link key={project.id} to={`/works/${project.id}`} className="absolute bottom-0 left-1/2" style={{ marginLeft: -150 }}>
-        <motion.div
-          variants={cardVariants as any}
-          custom={index}
-          initial="initial"
-          animate={hoveredIndex === index ? "hover" : hoveredIndex !== null ? "nonHover" : "initial"}
-          onHoverStart={() => setHoveredIndex(index)}
-          onHoverEnd={() => setHoveredIndex(null)}
-          className="w-[300px] h-[460px] bg-background border border-primary/20 shadow-2xl rounded-2xl origin-bottom cursor-pointer overflow-hidden group"
-          style={{ transformOrigin: "bottom center" }}
-        >
+      <motion.div
+        key={project.id}
+        variants={cardVariants as any}
+        custom={index}
+        initial="initial"
+        animate={hoveredIndex === index ? "hover" : hoveredIndex !== null ? "nonHover" : "initial"}
+        onHoverStart={() => setHoveredIndex(index)}
+        onHoverEnd={() => setHoveredIndex(null)}
+        className="absolute bottom-0 w-[300px] h-[460px] origin-bottom cursor-pointer group z-10"
+        style={{ left: "50%", marginLeft: -150, transformOrigin: "bottom center" }}
+      >
+        <Link to={`/works/${project.id}`} className="block w-full h-full bg-background border border-primary/20 shadow-2xl rounded-2xl overflow-hidden relative">
           <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110" style={{ backgroundImage: `url(${project.image})` }} />
           <div className="absolute inset-0 bg-black/60 group-hover:bg-black/30 transition-colors" />
           <div className="relative h-full flex flex-col justify-end p-6 z-10">
             <span className="text-primary text-xs font-mono mb-2 bg-primary/10 w-fit px-2 py-1">{project.category}</span>
             <h3 className="text-3xl font-bold text-white mb-4">{project.title}</h3>
           </div>
-        </motion.div>
-      </Link>
+        </Link>
+      </motion.div>
     ))}
   </div>
 );
