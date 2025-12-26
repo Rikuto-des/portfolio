@@ -103,37 +103,39 @@ const ModeCards = ({ displayedProjects, hoveredIndex, setHoveredIndex }: any) =>
 // --- Mode: MONITORS (CRT Surveillance) ---
 
 const ModeMonitors = ({ displayedProjects }: any) => (
-  <div className="grid grid-cols-1 md:grid-cols-2 gap-12 w-full max-w-6xl p-4">
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 w-full max-w-5xl p-4">
     {displayedProjects.map((project: any, i: number) => (
-      <Link key={project.id} to={`/works/${project.id}`} className="group relative w-full aspect-[4/3] flex items-center justify-center bg-black/50 rounded-xl overflow-hidden shadow-2xl border border-white/5">
-
-        {/* Project Image (Background Layer) */}
-        <div className="absolute top-[16%] bottom-[19%] left-[16%] right-[16%] z-0 rounded-lg overflow-hidden bg-black">
-          <div
-            className="w-full h-full bg-cover bg-center opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500 animate-pulse-slow"
+      <Link key={project.id} to={`/works/${project.id}`} className="group relative">
+        {/* CRT Frame */}
+        <div className="relative aspect-[4/3] bg-zinc-900 rounded-[20px] border-4 border-zinc-800 shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden">
+          {/* Screen Content */}
+          <div className="absolute inset-0 bg-cover bg-center opacity-60 group-hover:opacity-100 transition-opacity duration-200"
             style={{ backgroundImage: `url(${project.image})` }}
           />
-          {/* Screen Glitch Overlay */}
-          <div className="absolute inset-0 bg-primary/20 mix-blend-color-dodge opacity-0 group-hover:opacity-30 transition-opacity" />
-          <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0)_50%,rgba(0,0,0,0.2)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[size:100%_4px,3px_100%] pointer-events-none" />
-        </div>
 
-        {/* Monitor Frame (Foreground Layer with Blend Mode) */}
-        <div className="absolute inset-0 z-10 pointer-events-none mix-blend-screen filter contrast-125 brightness-110">
-          <img
-            src="/assets/monitor_frame.png"
-            alt="CRT Frame"
-            className="w-full h-full object-fill scale-110"
-          />
-        </div>
+          {/* CRT Effects */}
+          <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_80px_rgba(0,0,0,0.8)]" />
+          <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[size:100%_2px,3px_100%] z-10" />
+          <div className="absolute inset-0 bg-primary/10 mix-blend-overlay opacity-0 group-hover:opacity-100 transition-opacity" />
 
-        {/* UI Overlay (Top Priority) */}
-        <div className="absolute bottom-[24%] left-[20%] right-[20%] z-20 flex justify-between items-end opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <div className="bg-black/90 text-green-400 px-2 py-1 font-mono text-[10px] border border-green-500/30 backdrop-blur-md rounded-sm">
-            <span className="block font-bold truncate max-w-[150px]">{project.title}</span>
+          {/* UI Overlay */}
+          <div className="absolute top-4 left-6 z-20 font-mono text-xs text-green-500/80 tracking-widest flex items-center gap-2">
+            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+            REC • {project.category}
           </div>
-          <div className="text-[9px] text-green-500 font-mono animate-pulse">REC ●</div>
+
+          <div className="absolute bottom-6 left-6 right-6 z-20 transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+            <div className="bg-black/80 backdrop-blur-sm border border-green-500/30 p-4 rounded text-green-500 font-mono">
+              <h3 className="text-xl font-bold mb-1">{project.title}</h3>
+              <div className="text-xs opacity-70 flex gap-2">
+                {project.tech.map((t: string) => <span key={t}>[{t}]</span>)}
+              </div>
+            </div>
+          </div>
         </div>
+
+        {/* Cables (Decorative) */}
+        <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 w-[2px] h-8 bg-zinc-800" />
       </Link>
     ))}
   </div>
@@ -142,54 +144,39 @@ const ModeMonitors = ({ displayedProjects }: any) => (
 // --- Mode: CITY (Buildings) ---
 
 const ModeCity = ({ displayedProjects }: any) => (
-  <div className="relative w-full max-w-7xl h-[600px] flex items-end justify-center gap-2 px-4 overflow-hidden perspective-[1000px]">
+  <div className="relative w-full max-w-6xl h-[600px] flex items-end justify-center gap-4 px-4 overflow-hidden perspective-[1000px]">
     {displayedProjects.map((project: any, i: number) => {
-      const height = 450 + (i * 30) % 100; // Taller buildings
-      const hueRotate = i * 40;
-
+      const height = 300 + (i * 50) % 150; // Variable heights
       return (
-        <Link key={project.id} to={`/works/${project.id}`} className="group relative w-full md:w-1/4 max-w-[280px] flex justify-center h-full items-end">
+        <Link key={project.id} to={`/works/${project.id}`} className="group relative w-full md:w-1/4">
           <motion.div
-            initial={{ y: 600, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: i * 0.15, duration: 1, type: "spring", stiffness: 50 }}
-            className="relative w-full flex flex-col justify-end items-center"
-            style={{ height: `${height}px` }}
+            initial={{ scaleY: 0 }}
+            animate={{ scaleY: 1 }}
+            transition={{ delay: i * 0.1, duration: 0.8, ease: "circOut" }}
+            style={{ height: `${height}px`, transformOrigin: 'bottom' }}
+            className="w-full relative bg-zinc-900 border border-primary/20 hover:border-primary transition-colors flex flex-col justify-end overflow-hidden"
           >
-            {/* Project Image (Advertisement) */}
-            <div
-              className="absolute bottom-[35%] w-[58%] h-[28%] bg-black z-10 overflow-hidden box-border transform group-hover:brightness-125 transition-all duration-500"
-              style={{
-                boxShadow: `0 0 30px rgba(var(--primary), 0.4)`
-              }}
+            {/* Building Texture (Windows) */}
+            <div className="absolute inset-0 opacity-20 group-hover:opacity-40 transition-opacity"
+              style={{ backgroundImage: 'linear-gradient(rgba(var(--primary), 1) 1px, transparent 1px), linear-gradient(90deg, rgba(var(--primary), 1) 1px, transparent 1px)', backgroundSize: '10px 20px' }}
+            />
+
+            {/* Image as Billboard */}
+            <div className="h-[40%] bg-cover bg-center relative mx-2 mb-8 border border-primary/50 group-hover:brightness-125 transition-all"
+              style={{ backgroundImage: `url(${project.image})` }}
             >
-              <div
-                className="w-full h-full bg-cover bg-center opacity-90 group-hover:scale-105 transition-transform duration-700"
-                style={{ backgroundImage: `url(${project.image})` }}
-              />
-              <div className="absolute inset-0 bg-grid-white/[0.2] bg-[size:3px_3px] mix-blend-overlay pointer-events-none" />
-            </div>
-
-            {/* Building Image (Foreground with Blend) */}
-            <div className="absolute inset-0 z-20 pointer-events-none mix-blend-screen filter contrast-125">
-              <img
-                src="/assets/city_building.png"
-                alt="Building"
-                className="w-full h-full object-cover object-bottom"
-                style={{ filter: `hue-rotate(${hueRotate}deg)` }}
-              />
-            </div>
-
-            {/* Billboard Text Overlay */}
-            <div className="absolute bottom-[35%] w-[58%] h-[28%] z-30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-              <span className="bg-black/80 text-white font-black text-xs md:text-sm tracking-tighter uppercase px-2 py-1 border border-white transform -rotate-2">
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
+              <div className="absolute bottom-2 left-2 font-bold text-white text-lg leading-none drop-shadow-md">
                 {project.title}
-              </span>
+              </div>
             </div>
 
-            {/* Base Reflection */}
-            <div className="absolute -bottom-[20px] w-[80%] h-[20px] bg-primary/20 blur-xl rounded-full opacity-50" />
+            {/* Roof Lights */}
+            <div className="absolute top-0 inset-x-0 h-1 bg-red-500 animate-pulse shadow-[0_0_10px_red]" />
           </motion.div>
+
+          {/* Reflection */}
+          <div className="h-[100px] w-full bg-gradient-to-b from-primary/10 to-transparent opacity-50 transform scale-y-[-1] origin-top blur-sm pointer-events-none" />
         </Link>
       );
     })}
