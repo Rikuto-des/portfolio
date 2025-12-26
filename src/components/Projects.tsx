@@ -105,39 +105,34 @@ const ModeCards = ({ displayedProjects, hoveredIndex, setHoveredIndex }: any) =>
 const ModeMonitors = ({ displayedProjects }: any) => (
   <div className="grid grid-cols-1 md:grid-cols-2 gap-12 w-full max-w-6xl p-4">
     {displayedProjects.map((project: any, i: number) => (
-      <Link key={project.id} to={`/works/${project.id}`} className="group relative w-full aspect-square flex items-center justify-center">
-        {/* Monitor Frame Image */}
-        <div className="absolute inset-0 z-20 pointer-events-none">
+      <Link key={project.id} to={`/works/${project.id}`} className="group relative w-full aspect-[4/3] flex items-center justify-center bg-black/50 rounded-xl overflow-hidden shadow-2xl border border-white/5">
+
+        {/* Project Image (Background Layer) */}
+        <div className="absolute top-[16%] bottom-[19%] left-[16%] right-[16%] z-0 rounded-lg overflow-hidden bg-black">
+          <div
+            className="w-full h-full bg-cover bg-center opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500 animate-pulse-slow"
+            style={{ backgroundImage: `url(${project.image})` }}
+          />
+          {/* Screen Glitch Overlay */}
+          <div className="absolute inset-0 bg-primary/20 mix-blend-color-dodge opacity-0 group-hover:opacity-30 transition-opacity" />
+          <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0)_50%,rgba(0,0,0,0.2)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[size:100%_4px,3px_100%] pointer-events-none" />
+        </div>
+
+        {/* Monitor Frame (Foreground Layer with Blend Mode) */}
+        <div className="absolute inset-0 z-10 pointer-events-none mix-blend-screen filter contrast-125 brightness-110">
           <img
             src="/assets/monitor_frame.png"
             alt="CRT Frame"
-            className="w-full h-full object-contain drop-shadow-2xl scale-125 md:scale-100" // Mobile scale adjustment
+            className="w-full h-full object-fill scale-110"
           />
-          {/* Glass Reflection Overlay */}
-          <div className="absolute inset-[15%] rounded-[10%] bg-gradient-to-tr from-white/5 to-transparent pointer-events-none z-30 mix-blend-overlay" />
         </div>
 
-        {/* Screen Content Container (Positioned to match the frame's screen area) 
-                    Adjusted for generated image: center screen area 
-                */}
-        <div className="relative w-[50%] h-[50%] bg-black overflow-hidden rounded-[15px] z-10 box-border border-2 border-zinc-800 shadow-[inset_0_0_20px_rgba(0,0,0,1)]">
-          {/* Image */}
-          <div
-            className="absolute inset-0 bg-cover bg-center opacity-70 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500"
-            style={{ backgroundImage: `url(${project.image})` }}
-          />
-
-          {/* Scanlines & Glitch */}
-          <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[size:100%_4px,3px_100%] z-20" />
-          <div className="absolute inset-0 bg-primary/20 mix-blend-color-dodge opacity-0 group-hover:opacity-100 transition-opacity z-20" />
-
-          {/* UI Overlay inside screen */}
-          <div className="absolute bottom-2 left-2 right-2 z-30 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-            <div className="bg-black/90 text-green-500 p-1.5 font-mono text-[10px] border border-green-500/50 backdrop-blur-md">
-              <span className="block text-white font-bold mb-0.5 truncate">{project.title}</span>
-              <span className="opacity-70 animate-pulse">● LIVE FEED</span>
-            </div>
+        {/* UI Overlay (Top Priority) */}
+        <div className="absolute bottom-[24%] left-[20%] right-[20%] z-20 flex justify-between items-end opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <div className="bg-black/90 text-green-400 px-2 py-1 font-mono text-[10px] border border-green-500/30 backdrop-blur-md rounded-sm">
+            <span className="block font-bold truncate max-w-[150px]">{project.title}</span>
           </div>
+          <div className="text-[9px] text-green-500 font-mono animate-pulse">REC ●</div>
         </div>
       </Link>
     ))}
@@ -147,60 +142,53 @@ const ModeMonitors = ({ displayedProjects }: any) => (
 // --- Mode: CITY (Buildings) ---
 
 const ModeCity = ({ displayedProjects }: any) => (
-  <div className="relative w-full max-w-7xl h-[600px] flex items-end justify-center gap-2 md:gap-8 px-4 overflow-hidden perspective-[1000px]">
+  <div className="relative w-full max-w-7xl h-[600px] flex items-end justify-center gap-2 px-4 overflow-hidden perspective-[1000px]">
     {displayedProjects.map((project: any, i: number) => {
-      // Randomize building appearance slightly
-      const height = 400 + (i * 40) % 150;
-      const hueRotate = i * 60; // Different neon colors
+      const height = 450 + (i * 30) % 100; // Taller buildings
+      const hueRotate = i * 40;
 
       return (
-        <Link key={project.id} to={`/works/${project.id}`} className="group relative w-full md:w-1/4 max-w-[280px] flex justify-center">
+        <Link key={project.id} to={`/works/${project.id}`} className="group relative w-full md:w-1/4 max-w-[280px] flex justify-center h-full items-end">
           <motion.div
             initial={{ y: 600, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: i * 0.15, duration: 1, type: "spring", stiffness: 50 }}
-            className="relative w-full h-full flex flex-col justify-end items-center"
+            className="relative w-full flex flex-col justify-end items-center"
             style={{ height: `${height}px` }}
           >
-            {/* Building Image */}
-            <div className="absolute inset-0 z-20 pointer-events-none">
+            {/* Project Image (Advertisement) */}
+            <div
+              className="absolute bottom-[35%] w-[58%] h-[28%] bg-black z-10 overflow-hidden box-border transform group-hover:brightness-125 transition-all duration-500"
+              style={{
+                boxShadow: `0 0 30px rgba(var(--primary), 0.4)`
+              }}
+            >
+              <div
+                className="w-full h-full bg-cover bg-center opacity-90 group-hover:scale-105 transition-transform duration-700"
+                style={{ backgroundImage: `url(${project.image})` }}
+              />
+              <div className="absolute inset-0 bg-grid-white/[0.2] bg-[size:3px_3px] mix-blend-overlay pointer-events-none" />
+            </div>
+
+            {/* Building Image (Foreground with Blend) */}
+            <div className="absolute inset-0 z-20 pointer-events-none mix-blend-screen filter contrast-125">
               <img
                 src="/assets/city_building.png"
                 alt="Building"
-                className="w-full h-full object-cover md:object-contain object-bottom filter brightness-110 contrast-125 drop-shadow-2xl"
+                className="w-full h-full object-cover object-bottom"
                 style={{ filter: `hue-rotate(${hueRotate}deg)` }}
               />
             </div>
 
-            {/* Billboard Content 
-                            Adjusted based on standard vertical billboard placement
-                        */}
-            <div
-              className="absolute bottom-[25%] md:bottom-[35%] w-[40%] md:w-[48%] h-[20%] md:h-[30%] bg-black z-10 overflow-hidden box-border transform group-hover:brightness-125 transition-all duration-500"
-              style={{
-                boxShadow: `0 0 15px rgba(var(--primary), 0.3)`
-              }}
-            >
-              {/* Project Image */}
-              <div
-                className="w-full h-full bg-cover bg-center animate-pulse-slow group-hover:animate-none group-hover:scale-105 transition-transform duration-700"
-                style={{ backgroundImage: `url(${project.image})` }}
-              />
-
-              {/* Digital Mesh Overlay */}
-              <div className="absolute inset-0 bg-grid-white/[0.2] bg-[size:2px_2px] mix-blend-overlay pointer-events-none" />
-
-              {/* Project Title as Billboard Text */}
-              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/60 backdrop-blur-[1px]">
-                <span className="text-white font-black text-center text-xs md:text-sm leading-tight tracking-tighter uppercase p-1 border border-white">
-                  {project.title}
-                </span>
-              </div>
+            {/* Billboard Text Overlay */}
+            <div className="absolute bottom-[35%] w-[58%] h-[28%] z-30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+              <span className="bg-black/80 text-white font-black text-xs md:text-sm tracking-tighter uppercase px-2 py-1 border border-white transform -rotate-2">
+                {project.title}
+              </span>
             </div>
 
-            {/* Interactive Light Beam */}
-            <div className="absolute bottom-0 w-full h-[300px] bg-gradient-to-t from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-0 transform scale-x-50 blur-xl" />
-
+            {/* Base Reflection */}
+            <div className="absolute -bottom-[20px] w-[80%] h-[20px] bg-primary/20 blur-xl rounded-full opacity-50" />
           </motion.div>
         </Link>
       );
