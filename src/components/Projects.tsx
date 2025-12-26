@@ -28,15 +28,18 @@ const GlitchOverlay = () => (
 // --- Mode: CARDS (Original) ---
 
 const cardVariants = {
-  initial: (i: number) => ({
-    y: 0,
-    x: (i - 1.5) * 140,
-    rotate: (i - 1.5) * 5,
-    scale: 1,
-    zIndex: i,
-    filter: "brightness(0.9) grayscale(0.2)",
-    transition: { duration: 0.4, type: "spring", stiffness: 200 }
-  }),
+  initial: ({ i, total }: { i: number, total: number }) => {
+    const center = (total - 1) / 2;
+    return {
+      y: 0,
+      x: (i - center) * 140,
+      rotate: (i - center) * 5,
+      scale: 1,
+      zIndex: i,
+      filter: "brightness(0.9) grayscale(0.2)",
+      transition: { duration: 0.4, type: "spring", stiffness: 200 }
+    };
+  },
   hover: {
     y: -120,
     rotate: 0,
@@ -45,28 +48,31 @@ const cardVariants = {
     filter: "brightness(1) grayscale(0)",
     transition: { duration: 0.3 }
   },
-  nonHover: (i: number) => ({
-    x: (i - 1.5) * 100,
-    rotate: (i - 1.5) * 10,
-    scale: 0.85,
-    filter: "brightness(0.8) grayscale(1)",
-    transition: { duration: 0.4 }
-  })
+  nonHover: ({ i, total }: { i: number, total: number }) => {
+    const center = (total - 1) / 2;
+    return {
+      x: (i - center) * 100,
+      rotate: (i - center) * 10,
+      scale: 0.85,
+      filter: "brightness(0.8) grayscale(1)",
+      transition: { duration: 0.4 }
+    };
+  }
 };
 
 const ModeCards = ({ displayedProjects, hoveredIndex, setHoveredIndex }: any) => (
-  <div className="relative w-full max-w-6xl h-[600px] flex justify-center items-end perspective-1000 mx-auto">
+  <div className="relative w-full max-w-6xl h-[600px] flex justify-center items-end perspective-1000 mx-auto perspective-origin-center">
     {displayedProjects.map((project: any, index: number) => (
       <motion.div
         key={project.id}
         variants={cardVariants as any}
-        custom={index}
+        custom={{ i: index, total: displayedProjects.length }}
         initial="initial"
         animate={hoveredIndex === index ? "hover" : hoveredIndex !== null ? "nonHover" : "initial"}
         onHoverStart={() => setHoveredIndex(index)}
         onHoverEnd={() => setHoveredIndex(null)}
-        className="absolute bottom-0 w-[300px] h-[460px] origin-bottom cursor-pointer group z-10"
-        style={{ left: "50%", marginLeft: -150, transformOrigin: "bottom center" }}
+        className="absolute bottom-10 w-[300px] h-[460px] origin-bottom cursor-pointer group z-10"
+        style={{ left: 0, right: 0, margin: "0 auto", transformOrigin: "bottom center" }}
       >
         <Link to={`/works/${project.id}`} className="block w-full h-full bg-background border border-primary/20 shadow-2xl rounded-2xl overflow-hidden relative">
           <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110" style={{ backgroundImage: `url(${project.image})` }} />
