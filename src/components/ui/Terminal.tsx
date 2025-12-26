@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Command, Minimize2, Maximize2, Terminal as TerminalIcon } from 'lucide-react';
+import { X, Minimize2, Maximize2, Terminal as TerminalIcon } from 'lucide-react';
 
 type CommandResult = {
     type: 'text' | 'error' | 'success' | 'system';
