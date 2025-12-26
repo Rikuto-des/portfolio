@@ -187,15 +187,14 @@ const ModeMonitors = ({ displayedProjects }: any) => (
 // --- Mode: INTERACTIVE CUBES ---
 
 const InteractiveCube = ({ project }: { project: any }) => {
-  const rotateX = useMotionValue(-20);
-  const rotateY = useMotionValue(20);
+  const rotateX = useMotionValue(-10);
+  const rotateY = useMotionValue(0);
   const isDragging = useRef(false);
 
   // Auto rotation with useAnimationFrame
   useAnimationFrame((t, delta) => {
     if (!isDragging.current) {
       rotateY.set(rotateY.get() + delta * 0.02);
-      rotateX.set(rotateX.get() + delta * 0.01);
     }
   });
 
@@ -216,12 +215,9 @@ const InteractiveCube = ({ project }: { project: any }) => {
     (e.target as Element).releasePointerCapture(e.pointerId);
   };
 
-  // Shared face styles for glass/hologram look
-  const faceStyle = "absolute inset-0 border border-primary/40 bg-primary/10 backdrop-blur-sm flex items-center justify-center shadow-[inset_0_0_20px_rgba(var(--primary),0.1)] transition-all duration-300 pointer-events-none select-none";
-
   return (
     <div
-      className="perspective-[1000px] w-[180px] h-[180px] z-10 m-12 cursor-grab active:cursor-grabbing touch-none group"
+      className="perspective-[1000px] w-[180px] h-[180px] z-10 m-8 cursor-grab active:cursor-grabbing touch-none"
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
@@ -231,57 +227,37 @@ const InteractiveCube = ({ project }: { project: any }) => {
         className="w-full h-full relative preserve-3d"
         style={{ rotateX, rotateY }}
       >
-        {/* Internal Glowing Core (Cyber Effect) */}
-        <div className="absolute inset-0 m-auto w-[60px] h-[60px] bg-primary/30 rounded-full blur-xl animate-pulse preserve-3d"
-          style={{ transform: 'translateZ(0)' }}
-        />
-
+        {/* Cube Faces */}
         {/* Front (Image) */}
-        <div className={`${faceStyle} translate-z-[90px]`}>
-          <div className="relative w-full h-full p-2">
-            <div className="w-full h-full overflow-hidden border border-primary/20 bg-black/50 relative">
-              <img src={project.image} className="w-full h-full object-cover opacity-80 mix-blend-screen" alt="" />
-              <div className="absolute inset-0 bg-primary/10" />
-            </div>
-            <div className="absolute bottom-4 left-0 right-0 text-center">
-              <span className="text-primary font-bold text-xs tracking-widest bg-black/60 px-2 py-0.5 border border-primary/30">{project.title}</span>
+        <div className="absolute inset-0 border border-primary/50 bg-black/90 flex items-center justify-center translate-z-[90px] shadow-[0_0_30px_rgba(var(--primary),0.2)] pointer-events-none user-select-none">
+          <div className="relative w-full h-full overflow-hidden">
+            <img src={project.image} className="w-full h-full object-cover opacity-80 pointer-events-none" alt="" />
+            <div className="absolute bottom-0 inset-x-0 bg-black/60 p-2 text-center pointer-events-none">
+              <span className="text-primary font-bold text-sm tracking-widest">{project.title}</span>
             </div>
           </div>
         </div>
-
-        {/* Back (Data) */}
-        <div className={`${faceStyle} -translate-z-[90px] rotate-y-180`}>
-          <div className="p-3 text-[10px] font-mono text-primary/80 w-full h-full bg-black/40 flex flex-col items-start overflow-hidden">
-            <div className="font-bold border-b border-primary/30 mb-1 pb-1 w-full text-xs">SYS_DATA</div>
-            {project.tech.slice(0, 4).map((t: string) => <div key={t} className="truncate w-full">&gt; {t}</div>)}
+        {/* Back */}
+        <div className="absolute inset-0 border border-primary/50 bg-black/90 flex items-center justify-center -translate-z-[90px] rotate-y-180 pointer-events-none user-select-none">
+          <div className="p-4 text-xs font-mono text-primary/80">
+            <div className="font-bold border-b border-primary/30 mb-2 pb-1">SYS_INFO</div>
+            {project.tech.map((t: string) => <div key={t}>&gt; {t}</div>)}
           </div>
         </div>
-
         {/* Right */}
-        <div className={`${faceStyle} rotate-y-90 translate-z-[90px]`}>
-          <div className="w-full h-full bg-[linear-gradient(45deg,transparent_45%,rgba(var(--primary),0.2)_50%,transparent_55%)] bg-[size:10px_10px]" />
-          <span className="absolute text-primary/40 text-xs font-mono rotate-90 border border-primary/30 px-2">SIDE_A</span>
+        <div className="absolute inset-0 border border-primary/50 bg-primary/5 flex items-center justify-center rotate-y-90 translate-z-[90px] pointer-events-none user-select-none">
+          <span className="text-primary/30 text-xs font-mono rotate-90">SIDE_A</span>
         </div>
-
         {/* Left */}
-        <div className={`${faceStyle} -rotate-y-90 translate-z-[90px]`}>
-          <div className="w-full h-full border-4 border-double border-primary/20" />
-          <span className="absolute text-primary/40 text-xs font-mono -rotate-90 border border-primary/30 px-2">SIDE_B</span>
+        <div className="absolute inset-0 border border-primary/50 bg-primary/5 flex items-center justify-center -rotate-y-90 translate-z-[90px] pointer-events-none user-select-none">
+          <span className="text-primary/30 text-xs font-mono -rotate-90">SIDE_B</span>
         </div>
-
         {/* Top */}
-        <div className={`${faceStyle} rotate-x-90 translate-z-[90px]`}>
-          <div className="w-12 h-12 rounded-full border border-primary/40 flex items-center justify-center animate-spin-slow">
-            <div className="w-2 h-2 bg-primary rounded-full shadow-[0_0_10px_rgba(var(--primary),1)]" />
-          </div>
+        <div className="absolute inset-0 border border-primary/50 bg-primary/5 flex items-center justify-center rotate-x-90 translate-z-[90px] pointer-events-none user-select-none">
+          <div className="w-8 h-8 rounded-full border border-primary/30 animate-pulse pointer-events-none" />
         </div>
-
         {/* Bottom */}
-        <div className={`${faceStyle} -rotate-x-90 translate-z-[90px]`} >
-          <div className="grid grid-cols-3 gap-1 w-2/3 h-2/3 opacity-30">
-            {[...Array(9)].map((_, i) => <div key={i} className="bg-primary/50" />)}
-          </div>
-        </div>
+        <div className="absolute inset-0 border border-primary/50 bg-primary/5 flex items-center justify-center -rotate-x-90 translate-z-[90px] pointer-events-none user-select-none" />
       </motion.div>
 
       <style dangerouslySetInnerHTML={{
@@ -294,8 +270,7 @@ const InteractiveCube = ({ project }: { project: any }) => {
             .-rotate-y-90 { transform: rotateY(-90deg); }
             .rotate-x-90 { transform: rotateX(90deg); }
             .-rotate-x-90 { transform: rotateX(-90deg); }
-            .animate-spin-slow { animation: spin 4s linear infinite; }
-            @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+            .user-select-none { user-select: none; -webkit-user-select: none; }
         `}} />
     </div>
   );
