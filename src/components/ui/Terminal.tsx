@@ -40,7 +40,7 @@ const Terminal = () => {
     // Toggle with Ctrl+Shift+X
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
-            if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'x') {
+            if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'x') {
                 e.preventDefault();
                 setIsOpen(prev => !prev);
             }
@@ -216,7 +216,7 @@ const Terminal = () => {
             {/* Hint (Only visible when closed) */}
             {!isOpen && (
                 <div className="fixed bottom-4 right-4 z-50 text-[10px] text-muted-foreground/30 font-mono select-none pointer-events-none">
-                    Ctrl + Shift + X
+                    Cmd/Ctrl + Shift + X
                 </div>
             )}
         </>
