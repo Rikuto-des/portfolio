@@ -113,10 +113,10 @@ const CRTMonitor = ({ project }: { project: any }) => {
               <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.4)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[size:100%_3px,3px_100%] pointer-events-none z-20 mix-blend-multiply opacity-80" />
 
               {/* RGB Pixels SImulation */}
-              <div className="absolute inset-0 bg-[url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAIklEQVQIW2NkQAKrVq36zwjjgzjwqheqGw7AfAAkVh0U7QQAclYv7LtC+CcAAAAASUVORK5CYII=')] bg-[size:2px_2px] opacity-10 pointer-events-none z-20" />
+              <div className="absolute inset-0 bg-[url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAIklEQVQIW2NkQAKrVq36zwjjgzjwqheqGw7AfAAkVh0U7QQAclYv7LtC+CcAAAAASUVORK5CYII=')] bg-[size:2px_2px] opacity-10 pointer-events-none z-20 animate-noise" />
 
               {/* Screen Flicker / Scanline Bar */}
-              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/5 to-transparent h-[10%] w-full animate-scanline pointer-events-none z-30" />
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/5 to-transparent h-[20%] w-full animate-scanline pointer-events-none z-30" />
 
               {/* Vignette (Corner Darkening) */}
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_50%,rgba(0,0,0,0.6)_100%)] pointer-events-none z-30" />
@@ -136,6 +136,34 @@ const CRTMonitor = ({ project }: { project: any }) => {
           </div>
         </div>
       </div>
+
+      <style dangerouslySetInnerHTML={{
+        __html: `
+                @keyframes noise {
+                    0% { background-position: 0 0; }
+                    10% { background-position: -5% -10%; }
+                    20% { background-position: -15% 5%; }
+                    30% { background-position: 7% -25%; }
+                    40% { background-position: 20% 25%; }
+                    50% { background-position: -25% 10%; }
+                    60% { background-position: 15% 5%; }
+                    70% { background-position: 0% 15%; }
+                    80% { background-position: 25% 35%; }
+                    90% { background-position: -10% 10%; }
+                    100% { background-position: 0 0; }
+                }
+                .animate-noise {
+                    animation: noise 3s steps(10) infinite;
+                }
+                @keyframes scanline {
+                    0% { top: -20%; opacity: 0; }
+                    50% { opacity: 1; }
+                    100% { top: 120%; opacity: 0; }
+                }
+                .animate-scanline {
+                    animation: scanline 3s linear infinite;
+                }
+            `}} />
     </Link>
   );
 };
@@ -292,7 +320,7 @@ const Projects = () => {
       />
 
       {/* Mode Switcher */}
-      <div className="absolute top-10 right-4 md:right-10 z-50 flex items-center gap-2 bg-black/40 backdrop-blur-md p-1.5 rounded-full border border-white/10">
+      <div className="absolute top-10 right-10 z-50 hidden md:flex items-center gap-2 bg-black/40 backdrop-blur-md p-1.5 rounded-full border border-white/10">
         {(['cards', 'monitors', 'cubes'] as const).map((m) => {
           const Icons = { cards: LayoutTemplate, monitors: Monitor, cubes: Box };
           const Icon = Icons[m];
@@ -311,7 +339,7 @@ const Projects = () => {
 
       {/* Title Section */}
       <motion.div
-        className="text-center z-10 px-4 mb-8 md:mb-16 relative"
+        className="text-center z-10 px-4 mb-16 md:mb-24 relative w-full"
         variants={staggerContainer}
         initial="hidden"
         whileInView="visible"
