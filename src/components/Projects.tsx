@@ -152,7 +152,7 @@ const ProjectCard = memo(({
         }
         onHoverStart={onHoverStart}
         onHoverEnd={onHoverEnd}
-        className="absolute bottom-0 w-[300px] h-[460px] bg-card/90 border border-border shadow-lg origin-bottom cursor-pointer overflow-hidden group"
+        className="absolute bottom-0 w-[300px] h-[460px] bg-background border border-primary/20 shadow-2xl rounded-2xl origin-bottom cursor-pointer overflow-hidden group"
         style={{
           left: "50%",
           marginLeft: -150,
