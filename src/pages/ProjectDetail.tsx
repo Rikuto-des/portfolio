@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import { useParams, Link } from "react-router-dom";
 import { ArrowLeft, ExternalLink, Github, Layers, Cpu, Code } from "lucide-react";
@@ -6,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { projects } from "@/data/projects";
 import { useEffect } from "react";
+import ReactMarkdown from 'react-markdown';
 
 const ProjectDetail = () => {
     const { id } = useParams();
@@ -57,9 +57,9 @@ const ProjectDetail = () => {
                         ))}
                     </h1>
 
-                    <p className="text-xl text-muted-foreground max-w-2xl leading-relaxed">
-                        {project.fullDescription}
-                    </p>
+                    <div className="text-xl text-muted-foreground max-w-2xl leading-relaxed prose prose-invert prose-p:text-muted-foreground prose-headings:text-foreground prose-strong:text-foreground">
+                        <ReactMarkdown>{project.content || ""}</ReactMarkdown>
+                    </div>
                 </motion.div>
 
                 {/* Main Image */}
