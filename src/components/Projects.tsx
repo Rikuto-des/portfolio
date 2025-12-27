@@ -98,7 +98,14 @@ const CRTMonitor = ({ project }: { project: any }) => {
               <span className="text-[8px] text-zinc-500 font-mono tracking-wider">REC</span>
             </div>
 
-            {/* Central Pop-up Title (Holographic Style) */}
+            {/* Idle Title (Visible initially, fades out on hover) */}
+            <div className="absolute bottom-6 left-8 z-50 transition-all duration-300 group-hover:opacity-0 group-hover:translate-x-4">
+              <h3 className="text-primary font-heading font-bold text-xl tracking-tighter drop-shadow-[0_0_5px_var(--primary)] uppercase">
+                {project.title}
+              </h3>
+            </div>
+
+            {/* Central Pop-up Title (Holographic Style - Appears on hover) */}
             <div className="absolute inset-0 flex items-center justify-center z-50 pointer-events-none">
               <div className="relative transform scale-0 group-hover:scale-100 transition-transform duration-300 cubic-bezier(0.34, 1.56, 0.64, 1)">
                 <div className="bg-black/90 backdrop-blur-sm border border-primary/50 px-8 py-4 shadow-[0_0_30px_var(--primary)] relative min-w-[240px] text-center skew-x-[-2deg]">
