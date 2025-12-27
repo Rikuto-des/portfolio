@@ -5,7 +5,7 @@ import Home from "./pages/Home";
 import ProjectDetail from "./pages/ProjectDetail";
 import Archive from "./pages/Archive";
 import CustomCursor from "./components/CustomCursor";
-import FloatingShapes from "./components/FloatingShapes";
+import CyberBackground from "./components/scene/CyberBackground";
 import Preloader from "./components/Preloader";
 import { useState } from "react";
 import { AnimatePresence } from "framer-motion";
@@ -24,7 +24,7 @@ function App() {
           <>
             <div className="bg-grid" />
             <div className="bg-noise" />
-            <FloatingShapes />
+            <CyberBackground />
             <CustomCursor />
             <Header />
             <Routes>
