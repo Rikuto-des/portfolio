@@ -23,8 +23,8 @@ const CRTMonitor = ({ project }: { project: any }) => {
           <div className="absolute bottom-2 right-2 w-2 h-2 rounded-full bg-[#111] shadow-[inset_0_1px_2px_rgba(255,255,255,0.2)]"></div>
 
           {/* Power LED & Branding */}
-          <div className="absolute bottom-3 right-12 w-3 h-1 bg-red-900 group-hover:bg-[#33ff33] group-hover:shadow-[0_0_10px_#33ff33] transition-colors duration-300 z-50 rounded-[1px]"></div>
-          <div className="absolute bottom-3 left-12 text-[10px] text-[#33ff33]/40 tracking-[0.2em] font-bold z-50 group-hover:text-[#33ff33] transition-colors">SYSTEM_RDY</div>
+          <div className="absolute bottom-3 right-12 w-3 h-1 bg-red-900 group-hover:bg-primary group-hover:shadow-[0_0_10px_var(--primary)] transition-colors duration-300 z-50 rounded-[1px]"></div>
+          <div className="absolute bottom-3 left-12 text-[10px] text-primary/40 tracking-[0.2em] font-bold z-50 group-hover:text-primary transition-colors">SYSTEM_RDY</div>
 
           {/* 2. CRT Screen Surface */}
           <div className="absolute top-6 left-6 right-6 bottom-10 bg-[#0a140a] dark:bg-black rounded-[20px] overflow-hidden shadow-[inset_0_0_20px_rgba(0,0,0,1)] border-[4px] border-[#333] z-10 box-content transition-all duration-300 group-hover:border-[#33ff33]/50">
@@ -33,7 +33,7 @@ const CRTMonitor = ({ project }: { project: any }) => {
             <div className="relative w-full h-full overflow-hidden">
 
               {/* Green Monochrome Filter base */}
-              <div className="absolute inset-0 bg-[#33ff33] mix-blend-multiply opacity-20 pointer-events-none z-10" />
+              <div className="absolute inset-0 bg-primary mix-blend-multiply opacity-20 pointer-events-none z-10" />
 
               {/* Project Image */}
               <div className="absolute inset-0 bg-cover bg-center transition-all duration-500 group-hover:scale-105 opacity-60 group-hover:opacity-100 grayscale group-hover:grayscale-0 contrast-125 saturate-0 group-hover:saturate-100"
@@ -54,22 +54,22 @@ const CRTMonitor = ({ project }: { project: any }) => {
             </div>
 
             {/* UI Overlay on Screen */}
-            <div className="absolute top-3 left-4 z-50 text-[#33ff33] text-[10px] tracking-widest drop-shadow-[0_0_2px_rgba(51,255,51,0.8)] opacity-70 group-hover:opacity-100">
+            <div className="absolute top-3 left-4 z-50 text-primary text-[10px] tracking-widest drop-shadow-[0_0_2px_var(--primary)] opacity-70 group-hover:opacity-100">
               ID: {project.id.slice(0, 4).toUpperCase()}
             </div>
 
             {/* Pip-Boy Box Style Pop-up Title */}
             <div className="absolute inset-0 flex items-center justify-center z-50 pointer-events-none">
               <div className="relative transform scale-0 group-hover:scale-100 transition-transform duration-300 cubic-bezier(0.175, 0.885, 0.32, 1.275)">
-                <div className="bg-[#000] border-2 border-[#33ff33] px-6 py-3 shadow-[0_0_15px_rgba(51,255,51,0.3)] relative min-w-[200px] text-center">
+                <div className="bg-black border-2 border-primary px-6 py-3 shadow-[0_0_15px_var(--primary)] relative min-w-[200px] text-center">
 
                   {/* Corner Brackets */}
-                  <div className="absolute -top-[2px] -left-[2px] w-4 h-4 border-t-4 border-l-4 border-[#33ff33]" />
-                  <div className="absolute -top-[2px] -right-[2px] w-4 h-4 border-t-4 border-r-4 border-[#33ff33]" />
-                  <div className="absolute -bottom-[2px] -left-[2px] w-4 h-4 border-b-4 border-l-4 border-[#33ff33]" />
-                  <div className="absolute -bottom-[2px] -right-[2px] w-4 h-4 border-b-4 border-r-4 border-[#33ff33]" />
+                  <div className="absolute -top-[2px] -left-[2px] w-4 h-4 border-t-4 border-l-4 border-primary" />
+                  <div className="absolute -top-[2px] -right-[2px] w-4 h-4 border-t-4 border-r-4 border-primary" />
+                  <div className="absolute -bottom-[2px] -left-[2px] w-4 h-4 border-b-4 border-l-4 border-primary" />
+                  <div className="absolute -bottom-[2px] -right-[2px] w-4 h-4 border-b-4 border-r-4 border-primary" />
 
-                  <h3 className="relative font-bold text-xl md:text-2xl tracking-tight text-[#33ff33] uppercase drop-shadow-[0_0_5px_rgba(51,255,51,0.8)]">
+                  <h3 className="relative font-heading font-bold text-xl md:text-2xl tracking-tight text-primary uppercase drop-shadow-[0_0_5px_var(--primary)]">
                     {project.title}
                   </h3>
 
@@ -97,19 +97,13 @@ const Projects = () => {
   const displayedProjects = projects.slice(0, 4);
 
   return (
-    <section id="projects" className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden py-20 bg-[#f0f0f0] dark:bg-black transition-colors duration-500 font-mono">
+    <section id="projects" className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden py-32 bg-background font-mono">
 
-      {/* Fallout CRT Grid Background */}
-      <div className="absolute inset-0 pointer-events-none"
-        style={{
-          backgroundImage: `
-            linear-gradient(rgba(51, 255, 51, 0.1) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(51, 255, 51, 0.1) 1px, transparent 1px)
-          `,
-          backgroundSize: '40px 40px',
-        }}
-      />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.4)_100%)] pointer-events-none" />
+      {/* Cyber Grid Background (Consistent with Contact) */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute inset-0 bg-grid opacity-20" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.8)_100%)] pointer-events-none" />
+      </div>
 
       {/* Title Section */}
       <motion.div
@@ -119,14 +113,14 @@ const Projects = () => {
         whileInView="visible"
         viewport={{ once: true }}
       >
-        <div className="inline-flex items-center gap-2 mb-6 px-4 py-1 border-2 border-[#33ff33] bg-black text-[#33ff33] text-sm font-bold tracking-[0.2em] shadow-[4px_4px_0px_#1a4d1a] dark:shadow-[4px_4px_0px_rgba(51,255,51,0.4)]">
-          <Zap size={14} className="fill-[#33ff33]" />
-          <span>SYSTEM_VIEW</span>
+        <div className="flex items-center justify-center gap-2 mb-6">
+          <div className="w-2 h-2 bg-primary rounded-full animate-pulse shadow-[0_0_5px_var(--primary)]" />
+          <span className="font-mono text-sm text-primary tracking-[0.2em] uppercase">System_View</span>
         </div>
 
         <motion.h2
           variants={glitchIn}
-          className="font-black text-5xl md:text-7xl mb-4 relative inline-block text-[#1a4d1a] dark:text-[#33ff33] drop-shadow-[2px_2px_0px_rgba(0,0,0,0.2)] dark:drop-shadow-[0_0_10px_rgba(51,255,51,0.5)]"
+          className="font-heading font-black text-6xl md:text-8xl mb-6 relative inline-block text-primary drop-shadow-[0_0_10px_rgba(51,255,51,0.3)]"
         >
           DATABASE
         </motion.h2>
@@ -147,7 +141,7 @@ const Projects = () => {
       {/* Footer */}
       <div className="relative z-20 mt-12">
         <Link to="/archive">
-          <Button size="lg" variant="outline" className="group border-[#33ff33] text-[#33ff33] hover:bg-[#33ff33] hover:text-black rounded-none px-8 font-mono tracking-wider font-bold">
+          <Button size="lg" variant="outline" className="group border-primary text-primary hover:bg-primary hover:text-black rounded-none px-8 font-mono tracking-wider font-bold h-14 border hover:shadow-[0_0_20px_var(--primary)] transition-all">
             <Folder className="mr-2 h-4 w-4" />
             VIEW_ARCHIVES
           </Button>
