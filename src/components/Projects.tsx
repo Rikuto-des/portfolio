@@ -43,7 +43,8 @@ const CRTMonitor = ({ project }: { project: any }) => {
       <div className="absolute inset-0 flex items-center justify-center p-4">
 
         {/* Monitor Casing (Bezel) */}
-        <div className="relative w-full h-full bg-[#151515] rounded-[24px] shadow-[0_0_0_1px_#333,0_0_0_12px_#1a1a1a,0_0_30px_rgba(0,0,0,0.8),inset_0_0_20px_black] border-b-4 border-r-4 border-[#0a0a0a] group-hover:shadow-[0_0_0_12px_#1a1a1a,0_0_50px_var(--primary)] transition-shadow duration-500 overflow-hidden">
+        {/* Monitor Casing (Bezel) */}
+        <div className="relative w-full h-full bg-[#151515] rounded-[24px] shadow-[0_0_0_1px_#333,0_0_0_12px_#1a1a1a,0_0_30px_rgba(0,0,0,0.8),inset_0_0_20px_black] border-b-4 border-r-4 border-[#0a0a0a] group-hover:shadow-[0_0_0_12px_#1a1a1a,0_0_40px_rgba(51,255,51,0.2)] overflow-hidden transition-all duration-300 will-change-transform">
 
           {/* Top vents */}
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-2 flex gap-1 justify-center opacity-50">
@@ -72,7 +73,7 @@ const CRTMonitor = ({ project }: { project: any }) => {
               />
 
               {/* 3. Scanlines (Moving) */}
-              <div className="absolute inset-0 pointer-events-none z-20 bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.5)_51%)] bg-[size:100%_4px] opacity-40 animate-scanline" />
+              <div className="absolute inset-0 pointer-events-none z-20 bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.5)_51%)] bg-[size:100%_4px] opacity-15 animate-scanline" />
 
               {/* 4. Screen Glow / Bloom */}
               <div className="absolute inset-0 pointer-events-none z-20 bg-primary mix-blend-color-dodge opacity-10 group-hover:opacity-20 transition-opacity" />

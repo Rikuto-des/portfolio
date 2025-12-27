@@ -10,7 +10,7 @@ features:
   - "暗号化メッセージング機能"
   - "多通貨暗号資産サポート"
 gallery:
-  - "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=2565&auto=format&fit=crop"
+  - "https://images.unsplash.com/photo-1555685812-4b943f3e9943?q=80&w=2670&auto=format&fit=crop"
   - "https://images.unsplash.com/photo-1642104704074-907c0698cbd9?q=80&w=2832&auto=format&fit=crop"
 ---
 
