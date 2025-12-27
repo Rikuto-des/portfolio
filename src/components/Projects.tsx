@@ -65,10 +65,22 @@ const CRTMonitor = ({ project }: { project: any }) => {
             <div className="absolute top-4 left-6 z-50 font-mono text-green-500 text-xs tracking-widest drop-shadow-[0_0_5px_rgba(0,255,0,0.5)] group-hover:text-green-400 group-hover:drop-shadow-[0_0_8px_rgba(0,255,0,0.8)] transition-all">
               CH: {project.id.slice(0, 4).toUpperCase()}
             </div>
-            <div className="absolute bottom-4 left-6 z-50 w-[90%]">
-              <h3 className="glitch-title relative font-bold text-xl tracking-tight bg-black/50 px-3 py-1 inline-block text-white" data-text={project.title}>
-                {project.title}
-              </h3>
+
+            {/* TV Show Style Pop-up Title */}
+            <div className="absolute inset-0 flex items-center justify-center z-50 pointer-events-none">
+              <div className="relative transform scale-0 group-hover:scale-100 transition-transform duration-400 cubic-bezier(0.34, 1.56, 0.64, 1)">
+                <div className="bg-black/80 border-y-2 border-green-500 px-8 py-4 shadow-[0_0_20px_rgba(0,255,0,0.4)] relative backdrop-blur-sm overflow-hidden">
+
+                  {/* Decorative Elements */}
+                  <div className="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(0,255,0,0.1)_50%)] bg-[size:100%_4px]" />
+                  <div className="absolute top-0 left-0 w-full h-[1px] bg-green-500 shadow-[0_0_5px_#0f0]" />
+                  <div className="absolute bottom-0 right-0 w-full h-[1px] bg-green-500 shadow-[0_0_5px_#0f0]" />
+
+                  <h3 className="glitch-title relative font-black text-2xl md:text-4xl tracking-tighter text-white uppercase italic transform -skew-x-6" data-text={project.title}>
+                    {project.title}
+                  </h3>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -99,6 +111,7 @@ const CRTMonitor = ({ project }: { project: any }) => {
                 .glitch-title {
                     position: relative;
                     z-index: 10;
+                    text-shadow: 2px 2px 0px rgba(0,0,0,0.5);
                 }
                 
                 .group:hover .glitch-title::before,
@@ -109,7 +122,7 @@ const CRTMonitor = ({ project }: { project: any }) => {
                     left: 0;
                     width: 100%;
                     height: 100%;
-                    opacity: 0.7;
+                    opacity: 0.8;
                     background: transparent;
                 }
                 
@@ -117,7 +130,7 @@ const CRTMonitor = ({ project }: { project: any }) => {
                 .group:hover .glitch-title::before {
                     color: #ff00c1;
                     z-index: -1;
-                    transform: translate(-2px, 0);
+                    transform: translate(-3px, 0);
                     animation: glitch-anim-1 2s infinite linear alternate-reverse;
                 }
                 
@@ -125,27 +138,27 @@ const CRTMonitor = ({ project }: { project: any }) => {
                 .group:hover .glitch-title::after {
                     color: #00fff9;
                     z-index: -2;
-                    transform: translate(2px, 0);
+                    transform: translate(3px, 0);
                     animation: glitch-anim-2 3s infinite linear alternate-reverse;
                 }
                 
                 @keyframes glitch-anim-1 {
-                    0% { transform: translate(-2px, 0); }
-                    20% { transform: translate(-2px, 0); }
-                    21% { transform: translate(-2px, -1px); }
-                    23% { transform: translate(-2px, 0); }
-                    50% { transform: translate(-2px, 1px); }
-                    52% { transform: translate(-2px, 0); }
-                    100% { transform: translate(-2px, 0); }
+                    0% { transform: translate(-3px, 0); }
+                    20% { transform: translate(-3px, 0); }
+                    21% { transform: translate(-3px, -2px); }
+                    23% { transform: translate(-3px, 0); }
+                    50% { transform: translate(-3px, 2px); }
+                    52% { transform: translate(-3px, 0); }
+                    100% { transform: translate(-3px, 0); }
                 }
                 @keyframes glitch-anim-2 {
-                    0% { transform: translate(2px, 0); }
-                    60% { transform: translate(2px, 0); }
-                    61% { transform: translate(2px, 1px); }
-                    63% { transform: translate(2px, 0); }
-                    80% { transform: translate(2px, -1px); }
-                    82% { transform: translate(2px, 0); }
-                    100% { transform: translate(2px, 0); }
+                    0% { transform: translate(3px, 0); }
+                    60% { transform: translate(3px, 0); }
+                    61% { transform: translate(3px, 2px); }
+                    63% { transform: translate(3px, 0); }
+                    80% { transform: translate(3px, -2px); }
+                    82% { transform: translate(3px, 0); }
+                    100% { transform: translate(3px, 0); }
                 }
             `}} />
     </Link>
