@@ -9,74 +9,129 @@ import { Button } from "@/components/ui/button";
 
 // --- Mode: MONITORS (Detailed CRT Simulation) ---
 
+// --- SVG Filters & Definitions ---
+const CRTFilters = () => (
+  <svg className="absolute w-0 h-0 pointer-events-none" aria-hidden="true">
+    <defs>
+      {/* Phosphor Dot Pattern */}
+      <pattern id="phosphor-pattern" x="0" y="0" width="4" height="4" patternUnits="userSpaceOnUse">
+        <circle cx="1" cy="1" r="1" fill="rgb(255, 50, 50)" opacity="0.3" />
+        <circle cx="3" cy="1" r="1" fill="rgb(50, 255, 50)" opacity="0.3" />
+        <circle cx="2" cy="3" r="1" fill="rgb(50, 50, 255)" opacity="0.3" />
+      </pattern>
+
+      {/* Curvature & Distortion Filter */}
+      <filter id="curvature-filter">
+        <feMorphology operator="dilate" radius="2" in="SourceGraphic" result="dilated" />
+        <feGaussianBlur stdDeviation="1" in="dilated" result="blurred" />
+        <feComposite operator="out" in="blurred" in2="SourceGraphic" result="glow" />
+        <feMerge>
+          <feMergeNode in="glow" />
+          <feMergeNode in="SourceGraphic" />
+        </feMerge>
+      </filter>
+    </defs>
+  </svg>
+);
+
+// --- Mode: MONITORS (Hyper-Realistic CRT) ---
+
 const CRTMonitor = ({ project }: { project: any }) => {
   return (
-    <Link to={`/works/${project.id}`} className="group relative w-full pt-[75%] block font-mono">
+    <Link to={`/works/${project.id}`} className="group relative w-full pt-[80%] block font-mono bg-transparent perspective-1000">
+
       <div className="absolute inset-0 flex items-center justify-center p-4">
-        {/* 1. Monitor Chassis (Pip-Boy Casing) */}
-        <div className="relative w-full h-full bg-[#2b2b2b] dark:bg-[#1a1a1a] rounded-[10px] shadow-[0_0_0_8px_#3a3a3a,0_0_0_10px_#000,0_20px_40px_rgba(0,0,0,0.6)] overflow-hidden border-t-2 border-[#5c5c5c] dark:border-[#333] group-hover:shadow-[0_0_0_8px_#33ff33,0_0_0_10px_#000,0_0_30px_rgba(51,255,51,0.2)] transition-shadow duration-500">
 
-          {/* Screws / Bolts */}
-          <div className="absolute top-2 left-2 w-2 h-2 rounded-full bg-[#111] shadow-[inset_0_1px_2px_rgba(255,255,255,0.2)]"></div>
-          <div className="absolute top-2 right-2 w-2 h-2 rounded-full bg-[#111] shadow-[inset_0_1px_2px_rgba(255,255,255,0.2)]"></div>
-          <div className="absolute bottom-2 left-2 w-2 h-2 rounded-full bg-[#111] shadow-[inset_0_1px_2px_rgba(255,255,255,0.2)]"></div>
-          <div className="absolute bottom-2 right-2 w-2 h-2 rounded-full bg-[#111] shadow-[inset_0_1px_2px_rgba(255,255,255,0.2)]"></div>
+        {/* Monitor Casing (Bezel) */}
+        <div className="relative w-full h-full bg-[#151515] rounded-[24px] shadow-[0_0_0_1px_#333,0_0_0_12px_#1a1a1a,0_0_30px_rgba(0,0,0,0.8),inset_0_0_20px_black] border-b-4 border-r-4 border-[#0a0a0a] group-hover:shadow-[0_0_0_12px_#1a1a1a,0_0_50px_var(--primary)] transition-shadow duration-500 overflow-hidden">
 
-          {/* Power LED & Branding */}
-          <div className="absolute bottom-3 right-12 w-3 h-1 bg-red-900 group-hover:bg-primary group-hover:shadow-[0_0_10px_var(--primary)] transition-colors duration-300 z-50 rounded-[1px]"></div>
-          <div className="absolute bottom-3 left-12 text-[10px] text-primary/40 tracking-[0.2em] font-bold z-50 group-hover:text-primary transition-colors">SYSTEM_RDY</div>
+          {/* Top vents */}
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-2 flex gap-1 justify-center opacity-50">
+            {[...Array(8)].map((_, i) => (
+              <div key={i} className="w-full h-full bg-black/60 rounded-full" />
+            ))}
+          </div>
 
-          {/* 2. CRT Screen Surface */}
-          <div className="absolute top-6 left-6 right-6 bottom-10 bg-[#0a140a] dark:bg-black rounded-[20px] overflow-hidden shadow-[inset_0_0_20px_rgba(0,0,0,1)] border-[4px] border-[#333] z-10 box-content transition-all duration-300 group-hover:border-[#33ff33]/50">
+          {/* Screen Container (Inset) */}
+          <div className="absolute inset-3 bg-black rounded-[20px] overflow-hidden shadow-[inset_0_0_30px_rgba(0,0,0,1)] border border-[#333]">
 
-            {/* 3. Screen Content */}
-            <div className="relative w-full h-full overflow-hidden">
+            {/* --- THE SCREEN SURFACE --- */}
+            <div className="relative w-full h-full overflow-hidden rounded-[40px_40px_40px_40px] opacity-90 group-hover:opacity-100 transition-opacity duration-300">
 
-              {/* Green Monochrome Filter base */}
-              <div className="absolute inset-0 bg-primary mix-blend-multiply opacity-20 pointer-events-none z-10" />
+              {/* 1. Base Phosphor Layer */}
+              <div className="absolute inset-0 z-10 pointer-events-none mix-blend-overlay opacity-30" style={{ fill: "url(#phosphor-pattern)" }}>
+                <svg width="100%" height="100%">
+                  <rect width="100%" height="100%" fill="url(#phosphor-pattern)" />
+                </svg>
+              </div>
 
-              {/* Project Image */}
-              <div className="absolute inset-0 bg-cover bg-center transition-all duration-500 group-hover:scale-105 opacity-60 group-hover:opacity-100 grayscale group-hover:grayscale-0 contrast-125 saturate-0 group-hover:saturate-100"
+              {/* 2. Content Layer (Image) */}
+              <div
+                className="absolute inset-0 bg-cover bg-center transition-all duration-500 group-hover:scale-105 opacity-60 group-hover:opacity-100 grayscale group-hover:grayscale-0 contrast-125 saturate-0 group-hover:saturate-100 z-0"
                 style={{ backgroundImage: `url(${project.image})` }}
               />
 
-              {/* 4. Pip-Boy Artifacts */}
+              {/* 3. Scanlines (Moving) */}
+              <div className="absolute inset-0 pointer-events-none z-20 bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.5)_51%)] bg-[size:100%_4px] opacity-40 animate-scanline" />
 
-              {/* Scanlines (Steady) */}
-              <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.2)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[size:100%_4px,2px_100%] pointer-events-none z-20 mix-blend-overlay opacity-60" />
+              {/* 4. Screen Glow / Bloom */}
+              <div className="absolute inset-0 pointer-events-none z-20 bg-primary mix-blend-color-dodge opacity-10 group-hover:opacity-20 transition-opacity" />
 
-              {/* Vignette */}
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_40%,rgba(0,20,0,0.8)_100%)] pointer-events-none z-20" />
+              {/* 5. Glass Reflections (Glare) */}
+              <div className="absolute inset-0 pointer-events-none z-30 bg-gradient-to-br from-white/10 via-transparent to-transparent opacity-30 rounded-[100%]" />
+              <div className="absolute top-4 right-8 w-24 h-24 bg-white/5 blur-2xl rounded-full pointer-events-none z-30" />
 
-              {/* Glass Reflection */}
-              <div className="absolute top-0 right-0 w-[40%] h-[40%] bg-gradient-to-bl from-white/5 to-transparent rounded-bl-full pointer-events-none z-40 opacity-20" />
+              {/* 6. Vignette (Curvature Shadow) */}
+              <div className="absolute inset-0 pointer-events-none z-40 bg-[radial-gradient(circle_at_center,transparent_50%,rgba(0,0,0,0.9)_100%)] rounded-[20px]" />
 
+              {/* Use inline SVG curvature border if desired, or simpler CSS border-radius tricks */}
             </div>
 
-            {/* UI Overlay on Screen */}
-            <div className="absolute top-3 left-4 z-50 text-primary text-[10px] tracking-widest drop-shadow-[0_0_2px_var(--primary)] opacity-70 group-hover:opacity-100">
+            {/* UI Overlay */}
+            <div className="absolute top-6 left-8 z-50 text-primary text-[10px] md:text-xs font-mono tracking-widest drop-shadow-[0_0_5px_var(--primary)] opacity-70">
               ID: {project.id.slice(0, 4).toUpperCase()}
             </div>
 
-            {/* Pip-Boy Box Style Pop-up Title */}
+            {/* Hardware Status Light */}
+            <div className="absolute bottom-6 right-8 z-50 flex items-center gap-2">
+              <div className="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse shadow-[0_0_5px_red]" />
+              <span className="text-[8px] text-zinc-500 font-mono tracking-wider">REC</span>
+            </div>
+
+            {/* Central Pop-up Title (Holographic Style) */}
             <div className="absolute inset-0 flex items-center justify-center z-50 pointer-events-none">
-              <div className="relative transform scale-0 group-hover:scale-100 transition-transform duration-300 cubic-bezier(0.175, 0.885, 0.32, 1.275)">
-                <div className="bg-black border-2 border-primary px-6 py-3 shadow-[0_0_15px_var(--primary)] relative min-w-[200px] text-center">
+              <div className="relative transform scale-0 group-hover:scale-100 transition-transform duration-300 cubic-bezier(0.34, 1.56, 0.64, 1)">
+                <div className="bg-black/90 backdrop-blur-sm border border-primary/50 px-8 py-4 shadow-[0_0_30px_var(--primary)] relative min-w-[240px] text-center skew-x-[-2deg]">
 
-                  {/* Corner Brackets */}
-                  <div className="absolute -top-[2px] -left-[2px] w-4 h-4 border-t-4 border-l-4 border-primary" />
-                  <div className="absolute -top-[2px] -right-[2px] w-4 h-4 border-t-4 border-r-4 border-primary" />
-                  <div className="absolute -bottom-[2px] -left-[2px] w-4 h-4 border-b-4 border-l-4 border-primary" />
-                  <div className="absolute -bottom-[2px] -right-[2px] w-4 h-4 border-b-4 border-r-4 border-primary" />
+                  {/* Tech Decor Lines */}
+                  <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-50" />
+                  <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-50" />
 
-                  <h3 className="relative font-heading font-bold text-xl md:text-2xl tracking-tight text-primary uppercase drop-shadow-[0_0_5px_var(--primary)]">
+                  <div className="absolute -left-1 top-1/2 -translate-y-1/2 w-0.5 h-3/4 bg-primary/30" />
+                  <div className="absolute -right-1 top-1/2 -translate-y-1/2 w-0.5 h-3/4 bg-primary/30" />
+
+                  <h3 className="relative font-heading font-black text-2xl md:text-3xl tracking-tighter text-primary uppercase drop-shadow-[0_0_10px_var(--primary)] animate-pulse-slow">
                     {project.title}
                   </h3>
-
+                  <div className="text-[10px] text-primary/70 tracking-[0.3em] mt-1 border-t border-primary/20 pt-1">
+                    System_View
+                  </div>
                 </div>
               </div>
             </div>
+
           </div>
+
+          {/* Physical Buttons on Chassis */}
+          <div className="absolute bottom-4 right-16 flex gap-3 opacity-80">
+            <div className="w-3 h-3 rounded-full bg-[#111] shadow-[0_1px_1px_rgba(255,255,255,0.1)] border border-black" />
+            <div className="w-3 h-3 rounded-full bg-[#111] shadow-[0_1px_1px_rgba(255,255,255,0.1)] border border-black" />
+          </div>
+
+          <div className="absolute bottom-4 left-6 flex items-center gap-2">
+            <div className="text-[8px] text-[#444] font-bold tracking-widest font-mono">TK-421</div>
+          </div>
+
         </div>
       </div>
     </Link>
@@ -84,10 +139,13 @@ const CRTMonitor = ({ project }: { project: any }) => {
 };
 
 const ModeMonitors = ({ displayedProjects }: any) => (
-  <div className="grid grid-cols-1 md:grid-cols-2 gap-12 w-full max-w-5xl p-4 mx-auto">
-    {displayedProjects.map((project: any) => (
-      <CRTMonitor key={project.id} project={project} />
-    ))}
+  <div className="w-full">
+    <CRTFilters />
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-16 w-full max-w-6xl p-4 mx-auto">
+      {displayedProjects.map((project: any) => (
+        <CRTMonitor key={project.id} project={project} />
+      ))}
+    </div>
   </div>
 );
 

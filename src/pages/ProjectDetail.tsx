@@ -29,12 +29,19 @@ const ProjectDetail = () => {
     }
 
     return (
-        <div className="min-h-screen bg-background pt-24 pb-20">
-            <div className="container mx-auto px-6">
+        <div className="min-h-screen bg-background pt-24 pb-20 font-mono selection:bg-primary selection:text-black">
+
+            {/* Background Grid & Ambience */}
+            <div className="fixed inset-0 pointer-events-none z-0">
+                <div className="absolute inset-0 bg-grid opacity-20" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.8)_100%)]" />
+            </div>
+
+            <div className="container mx-auto px-6 relative z-10">
                 {/* Navigation */}
-                <Link to="/" className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary mb-8 transition-colors">
-                    <ArrowLeft size={20} />
-                    <span className="font-mono">BACK_TO_HQ</span>
+                <Link to="/" className="inline-flex items-center gap-2 text-primary/60 hover:text-primary mb-8 transition-colors group">
+                    <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
+                    <span className="tracking-widest text-sm">BACK_TO_HQ</span>
                 </Link>
 
                 {/* Header Section */}
@@ -44,20 +51,20 @@ const ProjectDetail = () => {
                     className="mb-12"
                 >
                     <div className="flex items-center gap-4 mb-4">
-                        <Badge variant="outline" className="border-primary text-primary font-mono rounded-none px-3 py-1">
+                        <Badge variant="outline" className="border-primary text-primary font-mono rounded-none px-3 py-1 bg-primary/10 backdrop-blur-sm">
                             {project.category}
                         </Badge>
                         <div className="h-px flex-1 bg-gradient-to-r from-primary/50 to-transparent" />
-                        <span className="font-mono text-muted-foreground">{project.id.toUpperCase()}</span>
+                        <span className="font-mono text-primary/60">{project.id.toUpperCase()}</span>
                     </div>
 
-                    <h1 className="text-5xl md:text-7xl font-heading font-black mb-6 text-foreground leading-[0.9]">
+                    <h1 className="text-5xl md:text-7xl font-heading font-black mb-6 text-primary leading-[0.9] drop-shadow-[0_0_10px_rgba(51,255,51,0.3)] uppercase">
                         {project.title.split(' ').map((word, i) => (
                             <span key={i} className="block">{word}</span>
                         ))}
                     </h1>
 
-                    <div className="text-xl text-muted-foreground max-w-2xl leading-relaxed prose prose-invert prose-p:text-muted-foreground prose-headings:text-foreground prose-strong:text-foreground">
+                    <div className="text-xl text-foreground/80 max-w-3xl leading-relaxed prose prose-invert prose-p:text-foreground/80 prose-headings:text-primary prose-strong:text-primary prose-a:text-primary prose-blockquote:border-l-primary prose-blockquote:bg-primary/5 prose-blockquote:py-1 prose-blockquote:px-4">
                         <ReactMarkdown>{project.content || ""}</ReactMarkdown>
                     </div>
                 </motion.div>
@@ -67,15 +74,16 @@ const ProjectDetail = () => {
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.2 }}
-                    className="relative w-full aspect-video rounded-2xl overflow-hidden mb-16 border border-border shadow-[0_20px_50px_-20px_rgba(0,0,0,0.2)]"
+                    className="relative w-full aspect-video rounded-none overflow-hidden mb-16 border-2 border-primary/30 shadow-[0_0_30px_rgba(0,0,0,0.5)] group"
                 >
                     <img
                         src={project.image}
                         alt={project.title}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
                     />
                     {/* Overlay Tech Lines */}
-                    <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.1)_1px,transparent_1px)] bg-[size:40px_40px] opacity-20 pointer-events-none" />
+                    <div className="absolute inset-0 bg-[linear-gradient(rgba(51,255,51,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(51,255,51,0.05)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none" />
+                    <div className="absolute inset-0 bg-primary/20 mix-blend-overlay pointer-events-none" />
                 </motion.div>
 
                 {/* Content Grid */}
@@ -84,7 +92,7 @@ const ProjectDetail = () => {
                     {/* Details Column */}
                     <div className="lg:col-span-2 space-y-12">
                         <div>
-                            <h3 className="text-2xl font-bold mb-6 flex items-center gap-3">
+                            <h3 className="text-2xl font-bold mb-6 flex items-center gap-3 text-primary font-heading tracking-wider">
                                 <Layers className="text-primary" />
                                 KEY_FEATURES
                             </h3>
@@ -95,10 +103,10 @@ const ProjectDetail = () => {
                                         initial={{ opacity: 0, x: -10 }}
                                         whileInView={{ opacity: 1, x: 0 }}
                                         transition={{ delay: i * 0.1 }}
-                                        className="flex items-start gap-3 p-4 bg-white/50 border border-border rounded-lg backdrop-blur-sm"
+                                        className="flex items-start gap-3 p-4 bg-card/40 border border-primary/20 hover:border-primary/60 transition-colors backdrop-blur-sm"
                                     >
-                                        <div className="w-1.5 h-1.5 mt-2 bg-secondary rounded-full" />
-                                        <span className="text-foreground/80">{feature}</span>
+                                        <div className="w-1.5 h-1.5 mt-2 bg-primary rounded-none" />
+                                        <span className="text-foreground/90 font-mono text-sm">{feature}</span>
                                     </motion.li>
                                 ))}
                             </ul>
@@ -106,14 +114,15 @@ const ProjectDetail = () => {
 
                         {/* Gallery */}
                         <div>
-                            <h3 className="text-2xl font-bold mb-6 flex items-center gap-3">
+                            <h3 className="text-2xl font-bold mb-6 flex items-center gap-3 text-primary font-heading tracking-wider">
                                 <Cpu className="text-primary" />
                                 VISUAL_LOGS
                             </h3>
                             <div className="grid gap-6">
                                 {project.gallery?.map((img, i) => (
-                                    <div key={i} className="relative rounded-xl overflow-hidden border border-border group">
-                                        <img src={img} alt={`Gallery ${i}`} className="w-full h-auto transition-transform duration-700 group-hover:scale-105" />
+                                    <div key={i} className="relative rounded-sm overflow-hidden border border-primary/30 group bg-black">
+                                        <div className="absolute inset-0 bg-primary/10 mix-blend-overlay z-10 pointer-events-none group-hover:opacity-0 transition-opacity" />
+                                        <img src={img} alt={`Gallery ${i}`} className="w-full h-auto transition-transform duration-700 group-hover:scale-105 opacity-80 group-hover:opacity-100 grayscale group-hover:grayscale-0" />
                                     </div>
                                 ))}
                             </div>
@@ -122,17 +131,17 @@ const ProjectDetail = () => {
 
                     {/* Sidebar */}
                     <div className="space-y-8">
-                        <div className="p-6 bg-white border border-border rounded-xl shadow-lg sticky top-24">
-                            <h3 className="font-mono text-sm text-muted-foreground mb-4 border-b border-border pb-2">PROJECT_INFO</h3>
+                        <div className="p-6 bg-card/60 backdrop-blur-md border border-primary/30 shadow-[0_0_20px_rgba(51,255,51,0.05)] sticky top-24">
+                            <h3 className="font-mono text-sm text-primary mb-4 border-b border-primary/30 pb-2 tracking-[0.2em]">PROJECT_INFO</h3>
 
                             <div className="space-y-6">
                                 <div>
-                                    <h4 className="font-bold flex items-center gap-2 mb-2">
-                                        <Code size={16} /> TECH_STACK
+                                    <h4 className="font-bold flex items-center gap-2 mb-3 text-foreground font-mono text-sm">
+                                        <Code size={16} className="text-primary" /> TECH_STACK
                                     </h4>
                                     <div className="flex flex-wrap gap-2">
                                         {project.tech.map(t => (
-                                            <Badge key={t} variant="secondary" className="bg-secondary/10 text-secondary hover:bg-secondary/20 rounded-md">
+                                            <Badge key={t} variant="secondary" className="bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 rounded-none font-mono text-xs">
                                                 {t}
                                             </Badge>
                                         ))}
@@ -140,11 +149,11 @@ const ProjectDetail = () => {
                                 </div>
 
                                 <div className="space-y-3 pt-4">
-                                    <Button className="w-full gap-2 rounded-none clip-path-button bg-primary hover:bg-primary/90 text-primary-foreground font-bold" size="lg">
+                                    <Button className="w-full gap-2 rounded-none bg-primary text-black hover:bg-primary/90 font-bold border border-primary shadow-[0_0_10px_rgba(51,255,51,0.2)] hover:shadow-[0_0_20px_rgba(51,255,51,0.4)] transition-all" size="lg">
                                         <ExternalLink size={18} />
                                         LAUNCH_LIVE
                                     </Button>
-                                    <Button variant="outline" className="w-full gap-2 rounded-none border-foreground/20 hover:bg-foreground/5">
+                                    <Button variant="outline" className="w-full gap-2 rounded-none border-primary/50 text-primary hover:bg-primary/10 hover:text-primary font-mono uppercase tracking-wider">
                                         <Github size={18} />
                                         SOURCE_CODE
                                     </Button>
@@ -157,5 +166,6 @@ const ProjectDetail = () => {
         </div>
     );
 };
+
 
 export default ProjectDetail;
