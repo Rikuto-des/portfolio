@@ -95,16 +95,12 @@ const CRTMonitor = ({ project }: { project: any }) => {
                     animation: scanline 1.5s linear infinite;
                 }
                 
-                /* Glitch Text Effect */
+                /* Mild Glitch Text Effect */
                 .glitch-title {
                     position: relative;
-                    transition: all 0.2s;
+                    z-index: 10;
                 }
-                .group:hover .glitch-title {
-                    color: transparent;
-                    background: rgba(0, 0, 0, 0.8);
-                    text-shadow: 2px 2px 0px #0f0;
-                }
+                
                 .group:hover .glitch-title::before,
                 .group:hover .glitch-title::after {
                     content: attr(data-text);
@@ -113,39 +109,43 @@ const CRTMonitor = ({ project }: { project: any }) => {
                     left: 0;
                     width: 100%;
                     height: 100%;
-                    background: #111; /* Matches bg color to hide original */
-                    padding: inherit; /* Align text */
+                    opacity: 0.7;
+                    background: transparent;
                 }
+                
+                /* Magenta shift */
                 .group:hover .glitch-title::before {
-                    left: 2px;
-                    text-shadow: -1px 0 #ff00c1;
-                    clip-path: inset(44% 0 61% 0);
-                    animation: glitch-anim-1 0.4s infinite linear alternate-reverse;
-                    color: #fff;
+                    color: #ff00c1;
+                    z-index: -1;
+                    transform: translate(-2px, 0);
+                    animation: glitch-anim-1 2s infinite linear alternate-reverse;
                 }
+                
+                /* Cyan shift */
                 .group:hover .glitch-title::after {
-                    left: -2px;
-                    text-shadow: -1px 0 #00fff9;
-                    clip-path: inset(54% 0 10% 0);
-                    animation: glitch-anim-2 0.4s infinite linear alternate-reverse;
-                    color: #fff;
+                    color: #00fff9;
+                    z-index: -2;
+                    transform: translate(2px, 0);
+                    animation: glitch-anim-2 3s infinite linear alternate-reverse;
                 }
                 
                 @keyframes glitch-anim-1 {
-                    0% { clip-path: inset(20% 0 80% 0); transform: translate(-2px, 1px); }
-                    20% { clip-path: inset(60% 0 10% 0); transform: translate(2px, -1px); }
-                    40% { clip-path: inset(40% 0 50% 0); transform: translate(-2px, 2px); }
-                    60% { clip-path: inset(80% 0 5% 0); transform: translate(1px, -2px); }
-                    80% { clip-path: inset(10% 0 70% 0); transform: translate(-1px, 1px); }
-                    100% { clip-path: inset(30% 0 40% 0); transform: translate(2px, -1px); }
+                    0% { transform: translate(-2px, 0); }
+                    20% { transform: translate(-2px, 0); }
+                    21% { transform: translate(-2px, -1px); }
+                    23% { transform: translate(-2px, 0); }
+                    50% { transform: translate(-2px, 1px); }
+                    52% { transform: translate(-2px, 0); }
+                    100% { transform: translate(-2px, 0); }
                 }
                 @keyframes glitch-anim-2 {
-                    0% { clip-path: inset(10% 0 60% 0); transform: translate(2px, -1px); }
-                    20% { clip-path: inset(80% 0 5% 0); transform: translate(-2px, 2px); }
-                    40% { clip-path: inset(30% 0 20% 0); transform: translate(1px, -2px); }
-                    60% { clip-path: inset(10% 0 80% 0); transform: translate(-1px, 1px); }
-                    80% { clip-path: inset(50% 0 30% 0); transform: translate(2px, 1px); }
-                    100% { clip-path: inset(70% 0 10% 0); transform: translate(-2px, -2px); }
+                    0% { transform: translate(2px, 0); }
+                    60% { transform: translate(2px, 0); }
+                    61% { transform: translate(2px, 1px); }
+                    63% { transform: translate(2px, 0); }
+                    80% { transform: translate(2px, -1px); }
+                    82% { transform: translate(2px, 0); }
+                    100% { transform: translate(2px, 0); }
                 }
             `}} />
     </Link>
