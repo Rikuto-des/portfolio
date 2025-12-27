@@ -122,7 +122,16 @@ const ProjectDetail = () => {
                                 {project.gallery?.map((img, i) => (
                                     <div key={i} className="relative rounded-sm overflow-hidden border border-primary/30 group bg-black">
                                         <div className="absolute inset-0 bg-primary/10 mix-blend-overlay z-10 pointer-events-none group-hover:opacity-0 transition-opacity" />
-                                        <img src={img} alt={`Gallery ${i}`} className="w-full h-auto transition-transform duration-700 group-hover:scale-105 opacity-80 group-hover:opacity-100 grayscale group-hover:grayscale-0" />
+                                        <img
+                                            src={img}
+                                            alt={`Gallery ${i}`}
+                                            className="w-full h-auto transition-transform duration-700 group-hover:scale-105 opacity-80 group-hover:opacity-100 grayscale group-hover:grayscale-0"
+                                            onError={(e) => {
+                                                const target = e.target as HTMLImageElement;
+                                                target.onerror = null; // Prevent infinite loop
+                                                target.src = "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2670&auto=format&fit=crop"; // Reliable fallback (Neon Nexus main img)
+                                            }}
+                                        />
                                     </div>
                                 ))}
                             </div>
