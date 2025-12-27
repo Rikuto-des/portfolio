@@ -65,8 +65,10 @@ const CRTMonitor = ({ project }: { project: any }) => {
             <div className="absolute top-4 left-6 z-50 font-mono text-green-500 text-xs tracking-widest drop-shadow-[0_0_5px_rgba(0,255,0,0.5)] group-hover:text-green-400 group-hover:drop-shadow-[0_0_8px_rgba(0,255,0,0.8)] transition-all">
               CH: {project.id.slice(0, 4).toUpperCase()}
             </div>
-            <div className="absolute bottom-4 left-6 z-50">
-              <h3 className="text-white font-bold text-lg tracking-tight drop-shadow-[2px_2px_0px_rgba(0,0,0,0.8)] bg-black/50 px-2 group-hover:text-green-100 group-hover:bg-black/70 transition-colors">{project.title}</h3>
+            <div className="absolute bottom-4 left-6 z-50 w-[90%]">
+              <h3 className="glitch-title relative font-bold text-xl tracking-tight bg-black/50 px-3 py-1 inline-block text-white" data-text={project.title}>
+                {project.title}
+              </h3>
             </div>
           </div>
         </div>
@@ -77,15 +79,6 @@ const CRTMonitor = ({ project }: { project: any }) => {
                 @keyframes noise {
                     0% { background-position: 0 0; }
                     10% { background-position: -5% -10%; }
-                    20% { background-position: -15% 5%; }
-                    30% { background-position: 7% -25%; }
-                    40% { background-position: 20% 25%; }
-                    50% { background-position: -25% 10%; }
-                    60% { background-position: 15% 5%; }
-                    70% { background-position: 0% 15%; }
-                    80% { background-position: 25% 35%; }
-                    90% { background-position: -10% 10%; }
-                    100% { background-position: 0 0; }
                 }
                 .animate-noise {
                     animation: noise 3s steps(10) infinite;
@@ -100,6 +93,59 @@ const CRTMonitor = ({ project }: { project: any }) => {
                 }
                 .animate-scanline-fast {
                     animation: scanline 1.5s linear infinite;
+                }
+                
+                /* Glitch Text Effect */
+                .glitch-title {
+                    position: relative;
+                    transition: all 0.2s;
+                }
+                .group:hover .glitch-title {
+                    color: transparent;
+                    background: rgba(0, 0, 0, 0.8);
+                    text-shadow: 2px 2px 0px #0f0;
+                }
+                .group:hover .glitch-title::before,
+                .group:hover .glitch-title::after {
+                    content: attr(data-text);
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: #111; /* Matches bg color to hide original */
+                    padding: inherit; /* Align text */
+                }
+                .group:hover .glitch-title::before {
+                    left: 2px;
+                    text-shadow: -1px 0 #ff00c1;
+                    clip-path: inset(44% 0 61% 0);
+                    animation: glitch-anim-1 0.4s infinite linear alternate-reverse;
+                    color: #fff;
+                }
+                .group:hover .glitch-title::after {
+                    left: -2px;
+                    text-shadow: -1px 0 #00fff9;
+                    clip-path: inset(54% 0 10% 0);
+                    animation: glitch-anim-2 0.4s infinite linear alternate-reverse;
+                    color: #fff;
+                }
+                
+                @keyframes glitch-anim-1 {
+                    0% { clip-path: inset(20% 0 80% 0); transform: translate(-2px, 1px); }
+                    20% { clip-path: inset(60% 0 10% 0); transform: translate(2px, -1px); }
+                    40% { clip-path: inset(40% 0 50% 0); transform: translate(-2px, 2px); }
+                    60% { clip-path: inset(80% 0 5% 0); transform: translate(1px, -2px); }
+                    80% { clip-path: inset(10% 0 70% 0); transform: translate(-1px, 1px); }
+                    100% { clip-path: inset(30% 0 40% 0); transform: translate(2px, -1px); }
+                }
+                @keyframes glitch-anim-2 {
+                    0% { clip-path: inset(10% 0 60% 0); transform: translate(2px, -1px); }
+                    20% { clip-path: inset(80% 0 5% 0); transform: translate(-2px, 2px); }
+                    40% { clip-path: inset(30% 0 20% 0); transform: translate(1px, -2px); }
+                    60% { clip-path: inset(10% 0 80% 0); transform: translate(-1px, 1px); }
+                    80% { clip-path: inset(50% 0 30% 0); transform: translate(2px, 1px); }
+                    100% { clip-path: inset(70% 0 10% 0); transform: translate(-2px, -2px); }
                 }
             `}} />
     </Link>
