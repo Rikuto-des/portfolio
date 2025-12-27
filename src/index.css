@@ -44,37 +44,37 @@
   --radius: 0.5rem;
 
   /* Off-White / Old Paper */
-  --background: #f4f4f0;
+  --background: #000000;
 
   /* Dark Terminal Green */
-  --foreground: #1a4d1a;
+  --foreground: #33ff33;
 
-  --card: rgba(244, 244, 240, 0.9);
-  --card-foreground: #1a4d1a;
+  --card: #0a0a0a;
+  --card-foreground: #33ff33;
 
-  --popover: #f4f4f0;
-  --popover-foreground: #1a4d1a;
+  --popover: #000000;
+  --popover-foreground: #33ff33;
 
-  /* Primary Text / Borders */
-  --primary: #1a4d1a;
-  --primary-foreground: #f4f4f0;
+  /* Main Neon Green */
+  --primary: #33ff33;
+  --primary-foreground: #000000;
 
-  /* Neon Green Accent */
-  --secondary: #33ff33;
-  --secondary-foreground: #000000;
+  /* Darker Green for depth */
+  --secondary: #003300;
+  --secondary-foreground: #33ff33;
 
-  --muted: #e4e4e0;
-  --muted-foreground: #4a704a;
+  --muted: #111111;
+  --muted-foreground: #006600;
 
-  --accent: #33ff33;
-  --accent-foreground: #1a4d1a;
+  --accent: #00cc00;
+  --accent-foreground: #000000;
 
-  --destructive: #990000;
-  --destructive-foreground: #f4f4f0;
+  --destructive: #ff3333;
+  --destructive-foreground: #000000;
 
-  --border: #1a4d1a;
-  --input: #1a4d1a;
-  --ring: #1a4d1a;
+  --border: #33ff33;
+  --input: #111111;
+  --ring: #33ff33;
 }
 
 .dark {

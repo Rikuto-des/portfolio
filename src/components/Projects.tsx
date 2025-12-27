@@ -24,7 +24,7 @@ const CRTMonitor = ({ project }: { project: any }) => {
 
           {/* Power LED & Branding */}
           <div className="absolute bottom-3 right-12 w-3 h-1 bg-red-900 group-hover:bg-[#33ff33] group-hover:shadow-[0_0_10px_#33ff33] transition-colors duration-300 z-50 rounded-[1px]"></div>
-          <div className="absolute bottom-3 left-12 text-[10px] text-[#33ff33]/40 tracking-[0.2em] font-bold z-50 group-hover:text-[#33ff33] transition-colors">ROBCO IND.</div>
+          <div className="absolute bottom-3 left-12 text-[10px] text-[#33ff33]/40 tracking-[0.2em] font-bold z-50 group-hover:text-[#33ff33] transition-colors">SYSTEM_RDY</div>
 
           {/* 2. CRT Screen Surface */}
           <div className="absolute top-6 left-6 right-6 bottom-10 bg-[#0a140a] dark:bg-black rounded-[20px] overflow-hidden shadow-[inset_0_0_20px_rgba(0,0,0,1)] border-[4px] border-[#333] z-10 box-content transition-all duration-300 group-hover:border-[#33ff33]/50">
@@ -55,7 +55,7 @@ const CRTMonitor = ({ project }: { project: any }) => {
 
             {/* UI Overlay on Screen */}
             <div className="absolute top-3 left-4 z-50 text-[#33ff33] text-[10px] tracking-widest drop-shadow-[0_0_2px_rgba(51,255,51,0.8)] opacity-70 group-hover:opacity-100">
-              STATUS: ONLINE
+              ID: {project.id.slice(0, 4).toUpperCase()}
             </div>
 
             {/* Pip-Boy Box Style Pop-up Title */}
@@ -72,9 +72,7 @@ const CRTMonitor = ({ project }: { project: any }) => {
                   <h3 className="relative font-bold text-xl md:text-2xl tracking-tight text-[#33ff33] uppercase drop-shadow-[0_0_5px_rgba(51,255,51,0.8)]">
                     {project.title}
                   </h3>
-                  <div className="mt-2 text-[10px] text-[#33ff33] tracking-[0.2em] border-t border-[#33ff33]/50 pt-1">
-                    &gt; ACCESS GRANTED
-                  </div>
+
                 </div>
               </div>
             </div>
@@ -123,7 +121,7 @@ const Projects = () => {
       >
         <div className="inline-flex items-center gap-2 mb-6 px-4 py-1 border-2 border-[#33ff33] bg-black text-[#33ff33] text-sm font-bold tracking-[0.2em] shadow-[4px_4px_0px_#1a4d1a] dark:shadow-[4px_4px_0px_rgba(51,255,51,0.4)]">
           <Zap size={14} className="fill-[#33ff33]" />
-          <span>PIP-BOY 3000 INTERFACE</span>
+          <span>SYSTEM_VIEW</span>
         </div>
 
         <motion.h2
@@ -151,7 +149,7 @@ const Projects = () => {
         <Link to="/archive">
           <Button size="lg" variant="outline" className="group border-[#33ff33] text-[#33ff33] hover:bg-[#33ff33] hover:text-black rounded-none px-8 font-mono tracking-wider font-bold">
             <Folder className="mr-2 h-4 w-4" />
-            ACCESS_ARCHIVES
+            VIEW_ARCHIVES
           </Button>
         </Link>
       </div>
