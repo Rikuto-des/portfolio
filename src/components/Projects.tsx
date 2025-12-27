@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { Folder, Zap } from "lucide-react";
 import { glitchIn, staggerContainer } from "@/lib/animation-variants";
 import { projects } from "@/data/projects";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
 // --- Shared Components ---
@@ -37,8 +37,10 @@ const CRTFilters = () => (
 // --- Mode: MONITORS (Hyper-Realistic CRT) ---
 
 const CRTMonitor = ({ project }: { project: any }) => {
+  const location = useLocation();
+
   return (
-    <Link to={`/works/${project.id}`} className="group relative w-full pt-[80%] block font-mono bg-transparent perspective-1000">
+    <Link to={`/works/${project.id}`} state={{ backgroundLocation: location }} className="group relative w-full pt-[80%] block font-mono bg-transparent perspective-1000">
 
       <div className="absolute inset-0 flex items-center justify-center p-4">
 

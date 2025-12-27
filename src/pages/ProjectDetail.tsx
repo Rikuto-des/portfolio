@@ -7,17 +7,19 @@ import { projects } from "@/data/projects";
 import { useEffect } from "react";
 import ReactMarkdown from 'react-markdown';
 
-const ProjectDetail = () => {
+const ProjectDetail = ({ isModal = false }: { isModal?: boolean }) => {
     const { id } = useParams();
     const project = projects.find((p) => p.id === id);
 
     useEffect(() => {
-        window.scrollTo(0, 0);
-    }, []);
+        if (!isModal) {
+            window.scrollTo(0, 0);
+        }
+    }, [isModal]);
 
     if (!project) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-background text-foreground">
+            <div className={`flex items-center justify-center bg-background text-foreground ${isModal ? 'h-full' : 'min-h-screen'}`}>
                 <div className="text-center">
                     <h2 className="text-4xl font-bold mb-4">404: PROJECT_NOT_FOUND</h2>
                     <Link to="/">
@@ -29,20 +31,25 @@ const ProjectDetail = () => {
     }
 
     return (
-        <div className="min-h-screen bg-background pt-24 pb-20 font-mono selection:bg-primary selection:text-black">
+        <div className={`${isModal ? 'bg-transparent pb-10' : 'min-h-screen bg-background pt-24 pb-20'} font-mono selection:bg-primary selection:text-black`}>
 
-            {/* Background Grid & Ambience */}
-            <div className="fixed inset-0 pointer-events-none z-0">
-                <div className="absolute inset-0 bg-grid opacity-20" />
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.8)_100%)]" />
-            </div>
+            {/* Background Grid & Ambience - Only show if separate page */}
+            {!isModal && (
+                <div className="fixed inset-0 pointer-events-none z-0">
+                    <div className="absolute inset-0 bg-grid opacity-20" />
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.8)_100%)]" />
+                </div>
+            )}
 
-            <div className="container mx-auto px-6 relative z-10">
-                {/* Navigation */}
-                <Link to="/" className="inline-flex items-center gap-2 text-primary/60 hover:text-primary mb-8 transition-colors group">
-                    <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
-                    <span className="tracking-widest text-sm">BACK_TO_HQ</span>
-                </Link>
+            <div className={`container mx-auto px-6 relative z-10 ${isModal ? 'pt-12' : ''}`}>
+
+                {/* Navigation - Hide in modal */}
+                {!isModal && (
+                    <Link to="/" className="inline-flex items-center gap-2 text-primary/60 hover:text-primary mb-8 transition-colors group">
+                        <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
+                        <span className="tracking-widest text-sm">BACK_TO_HQ</span>
+                    </Link>
+                )}
 
                 {/* Header Section */}
                 <motion.div

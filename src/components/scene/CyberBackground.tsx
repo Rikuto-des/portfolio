@@ -100,7 +100,7 @@ const ParticleField = () => {
 
 const CyberBackground = () => {
     return (
-        <div className="fixed inset-0 z-0 pointer-events-none opacity-60 mix-blend-screen">
+        <div className="fixed inset-0 z-0 pointer-events-none opacity-40 mix-blend-screen" style={{ filter: 'blur(8px)' }}>
             <Canvas camera={{ position: [0, 0, 15], fov: 50 }} gl={{ antialias: false, alpha: false }}>
                 <color attach="background" args={['#050505']} />
 
