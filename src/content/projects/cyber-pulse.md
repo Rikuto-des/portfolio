@@ -10,8 +10,8 @@ features:
   - "マイク入力サポート"
   - "VRモード互換"
 gallery:
-  - "https://images.unsplash.com/photo-1514525253440-b393452e8d26?q=80&w=2574&auto=format&fit=crop"
-  - "https://images.unsplash.com/photo-1511379938547-c1f69419868d?q=80&w=2670&auto=format&fit=crop"
+  - "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2670&auto=format&fit=crop"
+  - "https://images.unsplash.com/photo-1614728263952-84ea2563bc10?q=80&w=2574&auto=format&fit=crop"
 ---
 
 Cyber Pulse（サイバー・パルス）は、生のオーディオデータを催眠的な視覚体験へと変換します。高度なFFT解析とカスタムシェーダーを駆使し、すべてのビートと周波数に反応する共感覚的な旅を提供します。

@@ -43,8 +43,7 @@ const CRTMonitor = ({ project }: { project: any }) => {
       <div className="absolute inset-0 flex items-center justify-center p-4">
 
         {/* Monitor Casing (Bezel) */}
-        {/* Monitor Casing (Bezel) */}
-        <div className="relative w-full h-full bg-[#151515] rounded-[24px] shadow-[0_0_0_1px_#333,0_0_0_12px_#1a1a1a,0_0_30px_rgba(0,0,0,0.8),inset_0_0_20px_black] border-b-4 border-r-4 border-[#0a0a0a] group-hover:shadow-[0_0_0_12px_#1a1a1a,0_0_40px_rgba(51,255,51,0.2)] overflow-hidden transition-all duration-300 will-change-transform">
+        <div className="relative w-full h-full bg-[#151515] rounded-[30px] shadow-[0_0_0_1px_#333,0_0_0_12px_#1a1a1a,0_0_30px_rgba(0,0,0,0.8),inset_0_0_20px_black] border-b-4 border-r-4 border-[#0a0a0a] group-hover:shadow-[0_0_0_12px_#1a1a1a,0_0_40px_rgba(51,255,51,0.2)] overflow-hidden transition-all duration-300 will-change-transform">
 
           {/* Top vents */}
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-2 flex gap-1 justify-center opacity-50">
@@ -54,10 +53,10 @@ const CRTMonitor = ({ project }: { project: any }) => {
           </div>
 
           {/* Screen Container (Inset) */}
-          <div className="absolute inset-3 bg-black rounded-[20px] overflow-hidden shadow-[inset_0_0_30px_rgba(0,0,0,1)] border border-[#333]">
+          <div className="absolute inset-3 bg-black rounded-[24px] overflow-hidden shadow-[inset_0_0_30px_rgba(0,0,0,1)] border border-[#333]">
 
             {/* --- THE SCREEN SURFACE --- */}
-            <div className="relative w-full h-full overflow-hidden rounded-[40px_40px_40px_40px] opacity-90 group-hover:opacity-100 transition-opacity duration-300">
+            <div className="relative w-full h-full overflow-hidden rounded-[20px] opacity-90 group-hover:opacity-100 transition-opacity duration-300">
 
               {/* 1. Base Phosphor Layer */}
               <div className="absolute inset-0 z-10 pointer-events-none mix-blend-overlay opacity-30" style={{ fill: "url(#phosphor-pattern)" }}>
